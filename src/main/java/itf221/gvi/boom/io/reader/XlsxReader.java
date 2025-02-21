@@ -12,6 +12,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Reader class to read xlsx-files
+ */
 public class XlsxReader implements Reader{
     /**
      * method to read a xlsx-file and return the data from it.
