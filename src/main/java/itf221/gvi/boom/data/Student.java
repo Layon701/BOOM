@@ -1,19 +1,20 @@
 package itf221.gvi.boom.data;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
+/**
+ * Holds Student data.
+ */
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class Student {
-    List<PlannedPresentation> plannedPresentations;
-    List<OfferedPresentation> offeredPresentations;
-    String surname;
-    String name;
-    String schoolClass;
-    int id;
+    private List<PlannedPresentation> plannedPresentations;
+    private List<OfferedPresentation> offeredPresentations;
+    private String surname;
+    private String name;
+    private String schoolClass;
+    private int id;
 }
