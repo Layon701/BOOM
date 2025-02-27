@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ReaderTest {
     /**
-     * Tests the readFile method from the XlsxReader class
-     * @throws IOException when test data is missing
+     * Tests the readFile method from the XlsxReader class.
+     * @throws IOException when test data is missing.
      */
     @Test
     public void readFileTest() throws IOException {
