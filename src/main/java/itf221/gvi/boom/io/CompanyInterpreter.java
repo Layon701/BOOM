@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import itf221.gvi.boom.data.Company;
 import itf221.gvi.boom.data.OfferedPresentation;
 
+/**
+ * Interpreter class to extract company data from raw input data and create a list of companies
+ */
 public class CompanyInterpreter {
 	public static List<Company> interpret(List<List<String>> data)
 	{
@@ -33,7 +36,7 @@ public class CompanyInterpreter {
 				commap.put(name, currentCompany);
 			}
 
-			//adds new OfferedPrsentation to company
+			//adds new OfferedPresentation to company
 			currentCompany.getOfferedPresentations().add(new OfferedPresentation(Integer.parseInt(ls.get(0)),0,Integer.parseInt(ls.get(3)),ls.get(2),ls.get(5).charAt(0), name));
 		}
 
