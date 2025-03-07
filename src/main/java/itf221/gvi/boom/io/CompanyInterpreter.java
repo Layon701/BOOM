@@ -12,35 +12,32 @@ import itf221.gvi.boom.data.OfferedPresentation;
  * Interpreter class to extract company data from raw input data and create a list of companies
  */
 public class CompanyInterpreter {
-	public static List<Company> interpret(List<List<String>> data)
-	{
-		HashMap<String, Company> commap = new HashMap<String, Company>();
+    public static List<Company> interpret(List<List<String>> data) {
+        Map<String, Company> commap = new HashMap<String, Company>();
 
-		for(List<String> ls : data)
-		{	
-			if(ls.size() != 6)
-			{
-				continue;
-			}
+        for (List<String> row : data) {
+            if (row.size() != 6) {
+                continue;
+            }
 
-			String name = ls.get(1);
-			Company currentCompany;
+            String name = row.get(1);
+            Company currentCompany;
 
-			if(commap.containsKey(name))
-			{
-				currentCompany = commap.get(name);
-			}
-			else
-			{
-				currentCompany =new Company(name, new ArrayList<OfferedPresentation>());
-				commap.put(name, currentCompany);
-			}
+            if (commap.containsKey(name)) {
+                currentCompany = commap.get(name);
+            } else {
+                currentCompany = new Company(name, new ArrayList<OfferedPresentation>());
+                commap.put(name, currentCompany);
+            }
 
-			//adds new OfferedPresentation to company
-			currentCompany.getOfferedPresentations().add(new OfferedPresentation(Integer.parseInt(ls.get(0)),0,Integer.parseInt(ls.get(3)),ls.get(2),ls.get(5).charAt(0), name));
-		}
+            int id = Integer.parseInt(row.get(0));
+            int minCapacity = 0;
+            int maxCapacity = Integer.parseInt(row.get(3));
+            String specialty = row.get(2);
+            char earliestTime = row.get(5).charAt(0);
+            currentCompany.getOfferedPresentations().add(new OfferedPresentation(id, minCapacity, maxCapacity, specialty, earliestTime, name));
+        }
 
-		List<Company> companies = new ArrayList<Company>(commap.values());
-		return companies;
-	}
+        return new ArrayList<Company>(commap.values());
+    }
 }
