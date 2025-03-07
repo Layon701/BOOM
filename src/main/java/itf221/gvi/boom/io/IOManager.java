@@ -1,5 +1,6 @@
 package itf221.gvi.boom.io;
 
+import itf221.gvi.boom.data.BoomData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -34,4 +35,8 @@ public class IOManager {
      * The folder path where output files are saved.
      */
     private Path outputFolderPath;
+
+    public BoomData readFiles() {
+        return null;
+    }
 }
