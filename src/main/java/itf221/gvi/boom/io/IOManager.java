@@ -45,15 +45,28 @@ public class IOManager {
 
     /**
      * Method to fill and return a BoomData object
+     *
      * @return BoomDate object with rooms, companies and students
      */
-    public BoomData readFiles() throws IOException {
+    public BoomData readFiles() {
         Reader reader = new XlsxReader();
 
-        List<Room> rooms = RoomInterpreter.interpret(reader.readFile(companyFilePath));
-        List<Company> companies = CompanyInterpreter.interpret(reader.readFile(companyFilePath));
-        List<Student> students = StudentInterpreter.interpret(reader.readFile(studentsFilePath), companies);
+        List<Room> rooms;
+        List<Company> companies;
+        List<Student> students;
 
+        try {
+            rooms = RoomInterpreter.interpret(reader.readFile(roomFilePath));
+            companies = CompanyInterpreter.interpret(reader.readFile(companyFilePath));
+            students = StudentInterpreter.interpret(reader.readFile(studentsFilePath), companies);
+        } catch (IOException e) {
+            throw new RuntimeException(e); // change to custom exception
+        }
+
+        if (rooms.isEmpty() || companies.isEmpty() || students.isEmpty()) {
+            System.out.println("Throw custom exception");
+            return null;
+        }
         return new BoomData(rooms, companies, students);
     }
 
