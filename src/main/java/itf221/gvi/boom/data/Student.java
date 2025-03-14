@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 public class Student {
     private List<PlannedPresentation> plannedPresentations;
-    private List<OfferedPresentation> offeredPresentations;
+    private List<OfferedPresentation> wishedPresentations;
     private String surname;
     private String name;
     private String schoolClass;
