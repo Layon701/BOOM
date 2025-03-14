@@ -33,7 +33,7 @@ public class StudentInterpreter {
         int studentId = 0;
         for (List<String> row : data) {
             studentId++;
-            if (row.size() != 9) {
+            if (row.size() != 8) {
                 continue;
             }
 
