@@ -10,6 +10,7 @@ import java.util.List;
 public class Controller {
 
     public static void main(String[] args) {
+        System.out.println('E' - 'C' + 1);
         GUI gui = new GUI();
 
         // this should be filled by the GUI
