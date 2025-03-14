@@ -47,12 +47,12 @@ public class StudentInterpreterTest {
         List<Student> expectedData = Arrays.asList(tmpStudent1, tmpStudent2, tmpStudent3, tmpStudent4);
 
 
-        ArrayList<String> tmpRow1 = new ArrayList<String>(Arrays.asList("schoolclass1", "name1", "surname1", "1", "2", "3", "4", "5"));
-        ArrayList<String> tmpRow2 = new ArrayList<String>(Arrays.asList("schoolclass2", "name2", "surname2", "1", "2", "3", "4", "5"));
-        ArrayList<String> tmpRow3 = new ArrayList<String>(Arrays.asList("schoolclass3", "name3", "surname3", "1", "2", "3", "4", "5"));
-        ArrayList<String> tmpRow4 = new ArrayList<String>(Arrays.asList("schoolclass4", "name4", "surname4", "1", "2", "3", "4", "5"));
+        ArrayList<String> tmpRow1 = new ArrayList<String>(Arrays.asList("Class1", "name1", "surname1", "1", "2", "3", "4", "5"));
+        ArrayList<String> tmpRow2 = new ArrayList<String>(Arrays.asList("Class2", "name2", "surname2", "1", "2", "3", "4", "5"));
+        ArrayList<String> tmpRow3 = new ArrayList<String>(Arrays.asList("Class3", "name3", "surname3", "1", "2", "3", "4", "5"));
+        ArrayList<String> tmpRow4 = new ArrayList<String>(Arrays.asList("Class4", "name4", "surname4", "1", "2", "3", "4", "5"));
 
-        List<List<String>> testParameters = new ArrayList<>(Arrays.asList(tmpRow1, tmpRow2, tmpRow3));
+        List<List<String>> testParameters = new ArrayList<>(Arrays.asList(tmpRow1, tmpRow2, tmpRow3, tmpRow4));
 
         List<Student> testData = StudentInterpreter.interpret(testParameters, companyData);
         assertEquals(expectedData, testData);

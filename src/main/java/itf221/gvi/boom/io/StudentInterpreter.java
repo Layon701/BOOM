@@ -38,7 +38,7 @@ public class StudentInterpreter {
             }
 
             List<OfferedPresentation> wishes = new ArrayList<OfferedPresentation>();
-            for (int columnIndex = 3; columnIndex < 9; columnIndex++) {
+            for (int columnIndex = 3; columnIndex < 8; columnIndex++) {
                 Integer wishIndex = Integer.parseInt(row.get(columnIndex));
                 OfferedPresentation presentation = presentationMap.get(wishIndex);
                 wishes.add(presentation);
