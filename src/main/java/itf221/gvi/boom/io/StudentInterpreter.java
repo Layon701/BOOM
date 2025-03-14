@@ -8,6 +8,7 @@ import java.util.Map;
 import itf221.gvi.boom.data.Company;
 import itf221.gvi.boom.data.OfferedPresentation;
 import itf221.gvi.boom.data.Student;
+import itf221.gvi.boom.exceptions.InterpretException;
 
 /**
  * Interpreter for the student Excel-sheet
@@ -39,17 +40,27 @@ public class StudentInterpreter {
 
             List<OfferedPresentation> wishes = new ArrayList<OfferedPresentation>();
             for (int columnIndex = 3; columnIndex < 8; columnIndex++) {
-                Integer wishIndex = Integer.parseInt(row.get(columnIndex));
-                OfferedPresentation presentation = presentationMap.get(wishIndex);
-                wishes.add(presentation);
+                try {
+
+                    Integer wishIndex = Integer.parseInt(row.get(columnIndex));
+                    OfferedPresentation presentation = presentationMap.get(wishIndex);
+                    wishes.add(presentation);
+                } catch (IndexOutOfBoundsException | NumberFormatException e) {
+                    throw new InterpretException("Error while trying to get wishes for Student object", e);
+                }
             }
 
-            String schoolClass = row.get(0);
-            String name = row.get(1);
-            String surname = row.get(2);
+            try {
+                String schoolClass = row.get(0);
+                String name = row.get(1);
+                String surname = row.get(2);
 
-            students.add(new Student(wishes, surname, name, schoolClass, studentId));
+                students.add(new Student(wishes, surname, name, schoolClass, studentId));
+            } catch (IndexOutOfBoundsException e) {
+                throw new InterpretException("Error while trying to get indexes for Student object", e);
+            }
         }
+        System.out.println("Success creating students from student data");
         return students;
     }
 }

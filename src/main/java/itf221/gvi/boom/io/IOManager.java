@@ -4,6 +4,9 @@ import itf221.gvi.boom.data.BoomData;
 import itf221.gvi.boom.data.Company;
 import itf221.gvi.boom.data.Room;
 import itf221.gvi.boom.data.Student;
+import itf221.gvi.boom.exceptions.BoomDataCreationException;
+import itf221.gvi.boom.exceptions.EmptyFileException;
+import itf221.gvi.boom.exceptions.InterpretException;
 import itf221.gvi.boom.io.reader.Reader;
 import itf221.gvi.boom.io.reader.XlsxReader;
 import lombok.AllArgsConstructor;
@@ -59,14 +62,15 @@ public class IOManager {
             rooms = RoomInterpreter.interpret(reader.readFile(roomFilePath));
             companies = CompanyInterpreter.interpret(reader.readFile(companyFilePath));
             students = StudentInterpreter.interpret(reader.readFile(studentsFilePath), companies);
-        } catch (IOException e) {
-            throw new RuntimeException(e); // change to custom exception
+        } catch (IOException | InterpretException e) {
+            throw new BoomDataCreationException("Error while creating BoomData", e);
         }
 
         if (rooms.isEmpty() || companies.isEmpty() || students.isEmpty()) {
-            System.out.println("Throw custom exception");
-            return null;
+            throw new EmptyFileException("File had no content");
         }
+
+        System.out.println("Successfully created BoomData object from input files");
         return new BoomData(rooms, companies, students);
     }
 
