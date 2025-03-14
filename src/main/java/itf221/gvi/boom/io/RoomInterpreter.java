@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 import itf221.gvi.boom.data.Room;
+import itf221.gvi.boom.data.Student;
+import itf221.gvi.boom.exceptions.InterpretException;
 
 /**
  * Interpreter for the room Excel-sheet
@@ -22,9 +24,14 @@ public class RoomInterpreter {
                 continue;
             }
 
-            String name = row.get(0);
-            int capacity = Integer.parseInt(row.get(1));
-            rooms.add(new Room(name, capacity));
+            try {
+                String name = row.get(0);
+                int capacity = Integer.parseInt(row.get(1));
+
+                rooms.add(new Room(name, capacity));
+            } catch (IndexOutOfBoundsException e) {
+                throw new InterpretException("Error while trying to get indexes for Room object", e);
+            }
         }
         return rooms;
     }

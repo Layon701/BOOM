@@ -63,7 +63,7 @@ public class IOManager {
             companies = CompanyInterpreter.interpret(reader.readFile(companyFilePath));
             students = StudentInterpreter.interpret(reader.readFile(studentsFilePath), companies);
         } catch (IOException | InterpretException e) {
-            throw new BoomDataCreationException("Error while creating BoomData  \r\n", e);
+            throw new BoomDataCreationException("Error while creating BoomData", e);
         }
 
         if (rooms.isEmpty() || companies.isEmpty() || students.isEmpty()) {
