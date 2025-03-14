@@ -13,7 +13,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Data
 public class BoomData {
-    private Map<String, Room> rooms;
+    private List<Room> rooms;
     private List<Company> companies;
-    private Map<String, Student> students;
+    private List<Student> students;
 }

@@ -1,10 +1,17 @@
 package itf221.gvi.boom.io;
 
 import itf221.gvi.boom.data.BoomData;
+import itf221.gvi.boom.data.Company;
+import itf221.gvi.boom.data.Room;
+import itf221.gvi.boom.data.Student;
+import itf221.gvi.boom.io.reader.Reader;
+import itf221.gvi.boom.io.reader.XlsxReader;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 
 /**
  * The IOManager class encapsulates the file paths used for various input and output operations within the application.
@@ -36,7 +43,33 @@ public class IOManager {
      */
     private Path outputFolderPath;
 
+    /**
+     * Method to fill and return a BoomData object
+     *
+     * @return BoomDate object with rooms, companies and students
+     */
     public BoomData readFiles() {
-        return null;
+        Reader reader = new XlsxReader();
+
+        List<Room> rooms;
+        List<Company> companies;
+        List<Student> students;
+
+        try {
+            rooms = RoomInterpreter.interpret(reader.readFile(roomFilePath));
+            companies = CompanyInterpreter.interpret(reader.readFile(companyFilePath));
+            students = StudentInterpreter.interpret(reader.readFile(studentsFilePath), companies);
+        } catch (IOException e) {
+            throw new RuntimeException(e); // change to custom exception
+        }
+
+        if (rooms.isEmpty() || companies.isEmpty() || students.isEmpty()) {
+            System.out.println("Throw custom exception");
+            return null;
+        }
+        return new BoomData(rooms, companies, students);
+    }
+
+    public void writeFiles() {
     }
 }
