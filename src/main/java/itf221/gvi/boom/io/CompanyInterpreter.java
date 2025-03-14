@@ -46,6 +46,7 @@ public class CompanyInterpreter {
             }
         }
 
+        System.out.println("Success creating companies from company data");
         return new ArrayList<Company>(commap.values());
     }
 }

@@ -60,6 +60,7 @@ public class StudentInterpreter {
                 throw new InterpretException("Error while trying to get indexes for Student object", e);
             }
         }
+        System.out.println("Success creating students from student data");
         return students;
     }
 }

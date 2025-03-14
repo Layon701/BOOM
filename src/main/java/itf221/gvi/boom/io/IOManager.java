@@ -69,6 +69,8 @@ public class IOManager {
         if (rooms.isEmpty() || companies.isEmpty() || students.isEmpty()) {
             throw new EmptyFileException("File had no content");
         }
+
+        System.out.println("Successfully created BoomData object from input files");
         return new BoomData(rooms, companies, students);
     }
 

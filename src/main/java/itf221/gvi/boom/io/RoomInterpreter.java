@@ -33,6 +33,7 @@ public class RoomInterpreter {
                 throw new InterpretException("Error while trying to get indexes for Room object", e);
             }
         }
+        System.out.println("Success creating rooms from room data");
         return rooms;
     }
 }
