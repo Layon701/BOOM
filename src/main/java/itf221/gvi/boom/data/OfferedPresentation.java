@@ -2,6 +2,8 @@ package itf221.gvi.boom.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +19,17 @@ public class OfferedPresentation {
     private char earliestTime;
     private String companyName;
     private List<PlannedPresentation> plannedPresentations;
+
+    public OfferedPresentation(int id, int minCapacity, int maxCapacity, String specialty, char earliestTime,  String companyName)
+    {
+        this.id = id;
+        this.minCapacity = minCapacity;
+        this.maxCapacity = maxCapacity;
+        this.specialty = specialty;
+        this.earliestTime = earliestTime;
+        this.companyName = companyName;
+        this.plannedPresentations = new ArrayList<PlannedPresentation>();
+    }
 
     public String getTitle() {
         return String.format("%s: %s", this.getCompanyName(), this.getSpecialty());
