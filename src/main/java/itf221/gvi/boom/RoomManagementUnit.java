@@ -34,6 +34,7 @@ public class RoomManagementUnit {
                 }
             }
             totalScore += studentScore;
+            studentScore = 0;
         }
         System.out.println("Total score:" + totalScore / studentList.size() * 5 + "%");
     }
@@ -45,7 +46,13 @@ public class RoomManagementUnit {
      * @return boolean
      */
     private boolean isWishGranted(Student student, int i) {
-        return (student.getPlannedPresentations().get(i).getOfferedPresentation().getId() ==
-                student.getOfferedPresentations().get(i).getId());
+        boolean isWished = false;
+        for (PlannedPresentation plannedPresentation : student.getPlannedPresentations()) {
+            if (plannedPresentation.getOfferedPresentation().equals(student.getOfferedPresentations().get(i))) {
+                isWished = true;
+                break;
+            }
+        }
+        return isWished;
     }
 }
