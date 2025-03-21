@@ -21,6 +21,7 @@ public class RoomManagementUnit {
 
     /**
      * Calculates the completion score of all students adn prints the percentage in the console and returns the value.
+     *
      * @param boomData the data holding the presentations, the student wishes and the available rooms.
      * @return int as the percentage of all scores
      */
@@ -44,8 +45,9 @@ public class RoomManagementUnit {
 
     /**
      * Checks if a wish from a student was granted and returns the boolean.
+     *
      * @param student the student where we want to check if the wish was granted.
-     * @param i index of the wish.
+     * @param i       index of the wish.
      * @return boolean
      */
     private boolean isWishGranted(Student student, int i) {
@@ -57,5 +59,27 @@ public class RoomManagementUnit {
             }
         }
         return isWished;
+    }
+
+    /**
+     *
+     * @param boomData
+     */
+    private void setTimeslotAndRoom(BoomData boomData) {
+        // get studentsList from boomData
+        // iterate over planned/offeredPresentations from each student
+        //
+
+        /*
+    - every plannedPresentation receives a room and a timeframe
+
+    - if a company is not available during timeslot, it will not apply there (earliestTime)
+
+    - rooms should have no empty timeslots in between
+
+    - company should never get assigned a new room
+
+    - check offeredPresentations from student for their plannedPresentation and check if already full
+         */
     }
 }
