@@ -19,7 +19,7 @@ public class OfferedPresentationTest {
     public void getTitleTest() throws IOException {
         OfferedPresentation offeredPresentation =
                 new OfferedPresentation(1, 5, 20,
-                        "Polizeikommisar*in", 'A', "Polizei", new ArrayList<>());
+                        "Polizeikommisar*in", 'A', "Polizei");
 
         String expectedTitle = "Polizei: Polizeikommisar*in";
         assertEquals(expectedTitle, offeredPresentation.getTitle());
