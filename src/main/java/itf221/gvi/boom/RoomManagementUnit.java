@@ -28,6 +28,8 @@ public class RoomManagementUnit {
 
     /**
      * Calculates the maximum possible presentations based on the number of time slots available for a presentation.
+     * e.g. 'D' to 'E' = maximal presentation amount 2
+     *
      * @param offeredPresentation the offered presentation.
      * @return the amount.
      */
@@ -37,25 +39,25 @@ public class RoomManagementUnit {
 
     /**
      * Calculates the amount of presentations based on the student wishes.
-     * This defines how many plannedPresentations should be instantiated.
+     * Sets the calculated value as amountOfPresentations in the offeredPresentation.
+     *
      * @param boomData the BoomData.
      */
-    private void getRequiredPresentationAmount(BoomData boomData) {
+    protected void setRequiredPresentationAmount(BoomData boomData) {
         Map<OfferedPresentation, Integer> studentWishesMap = new HashMap<>();
 
         for (Student student : boomData.getStudents()) {
             for (OfferedPresentation wishedPresentation : student.getWishedPresentations()) {
-                Integer currentStudentAmount = studentWishesMap.get(wishedPresentation);
-                currentStudentAmount += 1;
-                studentWishesMap.put(wishedPresentation, currentStudentAmount);
+                studentWishesMap.merge(wishedPresentation, 1, Integer::sum);
             }
         }
 
         for (Map.Entry<OfferedPresentation, Integer> presentationWishAmountEntry : studentWishesMap.entrySet()) {
-            int amountOfPresentations = presentationWishAmountEntry.getValue() / 20;
+            int amountOfPresentations = (presentationWishAmountEntry.getValue() + 19) / 20;
 
-            if (amountOfPresentations > getMaxPossiblePresentations(presentationWishAmountEntry.getKey())) {
-                amountOfPresentations = getMaxPossiblePresentations(presentationWishAmountEntry.getKey());
+            int maxPossiblePresentations = getMaxPossiblePresentations(presentationWishAmountEntry.getKey());
+            if (amountOfPresentations > maxPossiblePresentations) {
+                amountOfPresentations = maxPossiblePresentations;
             }
 
             presentationWishAmountEntry.getKey().setAmountOfPresentations(amountOfPresentations);

@@ -19,10 +19,9 @@ public class Student {
     private String schoolClass;
     private int id;
 
-    public Student(List<OfferedPresentation> offeredPresentations, String surname, String name, String schoolClass, int id)
-    {
-        this.plannedPresentations = new ArrayList<PlannedPresentation>();
-        this.offeredPresentations = offeredPresentations;
+    public Student(List<OfferedPresentation> wishedPresentations, String surname, String name, String schoolClass, int id) {
+        this.plannedPresentations = new ArrayList<>();
+        this.wishedPresentations = wishedPresentations;
         this.surname = surname;
         this.name = name;
         this.schoolClass = schoolClass;

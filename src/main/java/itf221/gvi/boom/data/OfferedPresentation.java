@@ -22,9 +22,12 @@ public class OfferedPresentation {
     private char earliestTime;
     @NonNull
     private String companyName;
-    @NonNull
+
     private List<PlannedPresentation> plannedPresentations;
 
+    /**
+     * Defines how many plannedPresentations should be instantiated.
+     */
     private int amountOfPresentations;
 
     public String getTitle() {
