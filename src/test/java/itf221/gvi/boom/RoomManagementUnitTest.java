@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class RoomManagementUnitTest {
      * case b: tests if earliest timeslot bottleneck is applied correctly (e.g. 'D' to 'E' = maximal presentation amount 2)
      */
     @Test
-    public void testAmountOfPresentations() {
+    public void setRequiredPresentationAmountTest() {
         Company tmpCompanyA = new Company("CompanyA", List.of(new OfferedPresentation(1, 0, 20, "specialtyA", 'A', "CompanyA")));
         Company tmpCompanyB = new Company("CompanyB", List.of(new OfferedPresentation(2, 0, 20, "specialtyB", 'D', "CompanyB")));
 
@@ -55,16 +53,16 @@ public class RoomManagementUnitTest {
     }
 
     @Test
-    public void calculateCompletionScoreTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void calculateCompletionScoreTest() {
         //offeredPresentations
         List<OfferedPresentation> offeredPresentationList = new ArrayList<>();
-        OfferedPresentation offeredPresentation1 = new OfferedPresentation(123, 0, 0, null, '0', null);
-        OfferedPresentation offeredPresentation2 = new OfferedPresentation(234, 0, 0, null, '0', null);
-        OfferedPresentation offeredPresentation3 = new OfferedPresentation(456, 0, 0, null, '0', null);
-        OfferedPresentation offeredPresentation4 = new OfferedPresentation(567, 0, 0, null, '0', null);
-        OfferedPresentation offeredPresentation5 = new OfferedPresentation(789, 0, 0, null, '0', null);
-        OfferedPresentation offeredPresentation6 = new OfferedPresentation(890, 0, 0, null, '0', null);
-        OfferedPresentation offeredPresentation7 = new OfferedPresentation(6969, 0, 0, null, '0', null);
+        OfferedPresentation offeredPresentation1 = new OfferedPresentation(123, 0, 0, "", '0', "");
+        OfferedPresentation offeredPresentation2 = new OfferedPresentation(234, 0, 0, "", '0', "");
+        OfferedPresentation offeredPresentation3 = new OfferedPresentation(456, 0, 0, "", '0', "");
+        OfferedPresentation offeredPresentation4 = new OfferedPresentation(567, 0, 0, "", '0', "");
+        OfferedPresentation offeredPresentation5 = new OfferedPresentation(789, 0, 0, "", '0', "");
+        OfferedPresentation offeredPresentation6 = new OfferedPresentation(890, 0, 0, "", '0', "");
+        OfferedPresentation offeredPresentation7 = new OfferedPresentation(6969, 0, 0, "", '0', "");
         offeredPresentationList.add(offeredPresentation1);
         offeredPresentationList.add(offeredPresentation2);
         offeredPresentationList.add(offeredPresentation3);
@@ -88,11 +86,12 @@ public class RoomManagementUnitTest {
         //completionscore for student1: 6+5+3+2=16 * 5 = 80%
         Student student1 = new Student(plannedPresentationList, offeredPresentationList, null, null, null, 0);
         studentList.add(student1);
+
         BoomData boomData = new BoomData(null, null, studentList);
-        Method calculateCompletionScore = RoomManagementUnit.class.getDeclaredMethod("calculateCompletionScore", BoomData.class);
-        calculateCompletionScore.setAccessible(true);
+        RoomManagementUnit roomManagementUnit = new RoomManagementUnit();
+
         int expectedValue = 80;
-        int actualValue = (int) calculateCompletionScore.invoke(roomManagementUnit, boomData);
+        int actualValue = roomManagementUnit.calculateCompletionScore(boomData);
         assertEquals(expectedValue, actualValue);
     }
 }
