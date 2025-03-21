@@ -104,4 +104,26 @@ public class RoomManagementUnit {
         }
         return isWished;
     }
+
+    /**
+     *
+     * @param boomData
+     */
+    private void setTimeslotAndRoom(BoomData boomData) {
+        // get studentsList from boomData
+        // iterate over planned/offeredPresentations from each student
+        //
+
+        /*
+    - every plannedPresentation receives a room and a timeframe
+
+    - if a company is not available during timeslot, it will not apply there (earliestTime)
+
+    - rooms should have no empty timeslots in between
+
+    - company should never get assigned a new room
+
+    - check offeredPresentations from student for their plannedPresentation and check if already full
+         */
+    }
 }
