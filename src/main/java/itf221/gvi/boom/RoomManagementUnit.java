@@ -17,21 +17,48 @@ public class RoomManagementUnit {
      * <b>Deterministic</b> algorithm for distributing the offered presentations among the students considering their wishes.
      *
      * @param boomData the data holding the presentations, the student wishes and the available rooms.
-     * @return a list of the PlannedPresentations after the
      */
-    public List<PlannedPresentation> execute(BoomData boomData) {
-        return null;
+    public int execute(BoomData boomData) {
+        setRequiredPresentationAmount(boomData);
+        instantiatePlannedPresentations(boomData.getCompanies());
+
+        pseudoRandomizeStudentList(boomData.getStudents());
+        distributeStudentsOnPlannedPresentations(boomData);
+
+        return calculateCompletionScore(boomData);
     }
 
     /**
-     * Calculates the maximum possible presentations based on the number of time slots available for a presentation.
-     * e.g. 'D' to 'E' = maximal presentation amount 2
-     *
-     * @param offeredPresentation the offered presentation.
-     * @return the amount.
+     * @param students
      */
-    private int getMaxPossiblePresentations(OfferedPresentation offeredPresentation) {
-        return this.lastPossibleTimeslot - offeredPresentation.getEarliestTime() + 1;
+    protected void pseudoRandomizeStudentList(List<Student> students) {
+
+    }
+
+    /**
+     * @param boomData
+     */
+    protected void distributeStudentsOnPlannedPresentations(BoomData boomData) {
+        for (Student student : boomData.getStudents()){
+            student.getWishedPresentations().getFirst().getPlannedPresentationWithLeastAmountOfAtandees().addStudent(student);
+        }
+    }
+
+    /**
+     * Initializes the PlannedPresentations and adds them into the according OfferedPresentation.
+     *
+     * @param companies
+     */
+    protected void instantiatePlannedPresentations(List<Company> companies) {
+        for (Company company : companies) {
+            for (OfferedPresentation offeredPresentation : company.getOfferedPresentations()) {
+                List<PlannedPresentation> plannedPresentations = new ArrayList<>(offeredPresentation.getAmountOfPresentations());
+                for (int i = 0; i < offeredPresentation.getAmountOfPresentations(); i++) {
+                    plannedPresentations.add(new PlannedPresentation(offeredPresentation));
+                }
+                offeredPresentation.setPlannedPresentations(plannedPresentations);
+            }
+        }
     }
 
     /**
@@ -59,6 +86,17 @@ public class RoomManagementUnit {
 
             presentationWishAmountEntry.getKey().setAmountOfPresentations(amountOfPresentations);
         }
+    }
+
+    /**
+     * Calculates the maximum possible presentations based on the number of time slots available for a presentation.
+     * e.g. 'D' to 'E' = maximal presentation amount 2
+     *
+     * @param offeredPresentation the offered presentation.
+     * @return the amount.
+     */
+    private int getMaxPossiblePresentations(OfferedPresentation offeredPresentation) {
+        return this.lastPossibleTimeslot - offeredPresentation.getEarliestTime() + 1;
     }
 
     /**

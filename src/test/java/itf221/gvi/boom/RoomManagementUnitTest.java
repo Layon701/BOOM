@@ -74,21 +74,21 @@ public class RoomManagementUnitTest {
 
         // Planned presentations for student1 (score 16)
         List<PlannedPresentation> plannedPresentationList1 = new ArrayList<>(Arrays.asList(
-                new PlannedPresentation('0', null, offeredPresentationList.get(0), null), // wish 0: 6 points
-                new PlannedPresentation('0', null, offeredPresentationList.get(1), null), // wish 1: 5 points
-                new PlannedPresentation('0', null, offeredPresentationList.get(6), null), // not granted (e.g. wish 2 missing)
-                new PlannedPresentation('0', null, offeredPresentationList.get(3), null), // wish 3: 3 points
-                new PlannedPresentation('0', null, offeredPresentationList.get(4), null)  // wish 4: 2 points
+                new PlannedPresentation(offeredPresentationList.get(0)), // wish 0: 6 points
+                new PlannedPresentation(offeredPresentationList.get(1)), // wish 1: 5 points
+                new PlannedPresentation(offeredPresentationList.get(6)), // not granted (e.g. wish 2 missing)
+                new PlannedPresentation(offeredPresentationList.get(3)), // wish 3: 3 points
+                new PlannedPresentation(offeredPresentationList.get(4))  // wish 4: 2 points
         ));
 
         // Planned presentations for student2 (score 17, by adding one more granted wish)
         List<PlannedPresentation> plannedPresentationList2 = new ArrayList<>(Arrays.asList(
-                new PlannedPresentation('0', null, offeredPresentationList.get(0), null), // wish 0: 6 points
-                new PlannedPresentation('0', null, offeredPresentationList.get(1), null), // wish 1: 5 points
-                new PlannedPresentation('0', null, offeredPresentationList.get(6), null), // not granted (as above)
-                new PlannedPresentation('0', null, offeredPresentationList.get(3), null), // wish 3: 3 points
-                new PlannedPresentation('0', null, offeredPresentationList.get(4), null), // wish 4: 2 points
-                new PlannedPresentation('0', null, offeredPresentationList.get(5), null)  // wish 5: 1 point (extra)
+                new PlannedPresentation(offeredPresentationList.get(0)), // wish 0: 6 points
+                new PlannedPresentation(offeredPresentationList.get(1)), // wish 1: 5 points
+                new PlannedPresentation(offeredPresentationList.get(6)), // not granted (as above)
+                new PlannedPresentation(offeredPresentationList.get(3)), // wish 3: 3 points
+                new PlannedPresentation(offeredPresentationList.get(4)), // wish 4: 2 points
+                new PlannedPresentation(offeredPresentationList.get(5))  // wish 5: 1 point (extra)
         ));
 
         // Create two students with different scores
