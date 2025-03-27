@@ -40,7 +40,7 @@ public class RoomManagementUnit {
      */
     protected void distributeStudentsOnPlannedPresentations(BoomData boomData) {
         for (Student student : boomData.getStudents()){
-            student.getWishedPresentations().getFirst().getPlannedPresentationWithLeastAmountOfAtandees().addStudent(student);
+            student.getWishedPresentations().getFirst().getPlannedPresentationWithLeastAmountOfAttendees().addStudent(student);
         }
     }
 
