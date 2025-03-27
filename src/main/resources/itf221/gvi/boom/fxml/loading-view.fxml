@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -13,7 +11,5 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="export_view_button" layoutX="297.0" layoutY="453.0" mnemonicParsing="false" onAction="#initLoading" text="Export-View" AnchorPane.leftAnchor="297.0" AnchorPane.topAnchor="453.0" />
-      <ProgressIndicator disable="true" layoutX="324.0" layoutY="236.0" prefHeight="250.0" prefWidth="250.0" progress="0.33" />
    </children>
 </AnchorPane>
