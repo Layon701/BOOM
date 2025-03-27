@@ -30,6 +30,10 @@ public class OfferedPresentation {
      */
     private int amountOfPresentations;
 
+    public PlannedPresentation getPlannedPresentationWithLeastAmountOfAtandees(){
+        return plannedPresentations.getFirst();
+    }
+
     public String getTitle() {
         return String.format("%s: %s", this.getCompanyName(), this.getSpecialty());
     }
