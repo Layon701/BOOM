@@ -2,6 +2,7 @@ package itf221.gvi.boom.data;
 
 import lombok.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -30,8 +31,12 @@ public class OfferedPresentation {
      */
     private int amountOfPresentations;
 
-    public PlannedPresentation getPlannedPresentationWithLeastAmountOfAtandees(){
-        return plannedPresentations.getFirst();
+    /**
+     * @return the planned presentation with the least amount of attendees.
+     * Null check to prevent NullPointerException.
+     */
+    public PlannedPresentation getPlannedPresentationWithLeastAmountOfAttendees() {
+        return plannedPresentations == null ? null : plannedPresentations.stream().min(Comparator.comparingInt(p -> p.getAttendees().size())).orElse(null);
     }
 
     public String getTitle() {
