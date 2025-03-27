@@ -48,18 +48,23 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>23.0.2</version>
+            <version>22.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>22.0.1</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
+            <!-- JavaFX Maven Plugin -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version>
+                <version>0.0.4</version>
                 <configuration>
-                    <mainClass>HelloFX</mainClass>
+                    <mainClass>itf221.gvi.boom.Main</mainClass> <!-- Replace with your main class -->
                 </configuration>
             </plugin>
         </plugins>
