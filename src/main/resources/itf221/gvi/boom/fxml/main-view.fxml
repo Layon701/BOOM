@@ -9,10 +9,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="itf221.gvi.boom.gui.controller.MainController">
    <children>
-      <Label alignment="CENTER" layoutX="266.0" layoutY="43.0" prefHeight="35.0" prefWidth="178.0" text="Import Data" textAlignment="CENTER">
+      <Label alignment="CENTER" layoutX="246.0" layoutY="52.0" prefHeight="35.0" prefWidth="219.0" text="Dateien auswählen" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
@@ -51,12 +50,13 @@
           </Menu>
         </menus>
       </MenuBar>
-      <TextArea id="sw_path_field" disable="true" layoutX="180.0" layoutY="156.0" prefHeight="35.0" prefWidth="219.0" />
-      <TextArea id="ul_path_field" disable="true" layoutX="180.0" layoutY="257.0" prefHeight="35.0" prefWidth="219.0" />
-      <TextArea id="rp_path_field" disable="true" layoutX="180.0" layoutY="364.0" prefHeight="35.0" prefWidth="219.0" />
-      <Button id="sw_browse_button" layoutX="428.0" layoutY="157.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="63.0" text="Browse" />
-      <Button id="ul_browse_button" layoutX="428.0" layoutY="259.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="63.0" text="Browse" />
-      <Button id="rp_browse_button" layoutX="428.0" layoutY="366.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="63.0" text="Browse" />
-      <Button id="import_button" layoutX="616.0" layoutY="428.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="63.0" text="Import" />
+      <TextArea fx:id="sw_import_field" editable="false" layoutX="180.0" layoutY="156.0" prefHeight="35.0" prefWidth="219.0" />
+      <TextArea fx:id="ul_import_field" editable="false" layoutX="180.0" layoutY="257.0" prefHeight="35.0" prefWidth="219.0" />
+      <TextArea fx:id="rp_import_field" editable="false" layoutX="180.0" layoutY="364.0" prefHeight="35.0" prefWidth="219.0" />
+      <Button fx:id="sw_browse_button" layoutX="428.0" layoutY="157.0" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="35.0" prefWidth="94.0" text="Durchsuchen" />
+      <Button id="ul_browse_button" fx:id="ul_browse_button" layoutX="428.0" layoutY="259.0" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="35.0" prefWidth="94.0" text="Durchsuchen" />
+      <Button id="rp_browse_button" fx:id="rp_browse_button" layoutX="428.0" layoutY="366.0" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="35.0" prefWidth="94.0" text="Durchsuchen" />
+      <Button id="import_button" fx:id="import_button" disable="true" layoutX="616.0" layoutY="428.0" mnemonicParsing="false" onAction="#initImport" prefHeight="35.0" prefWidth="63.0" text="Starten" />
+      <Button fx:id="help_button" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#openDocumentation" text="Hilfe" />
    </children>
 </AnchorPane>
