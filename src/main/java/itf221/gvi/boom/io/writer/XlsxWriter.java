@@ -1,15 +1,15 @@
 package itf221.gvi.boom.io.writer;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import itf221.gvi.boom.data.OfferedPresentation;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import itf221.gvi.boom.data.PlannedPresentation;
 import itf221.gvi.boom.data.Student;
 import itf221.gvi.boom.io.writer.FileWriter;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -18,36 +18,47 @@ public class XlsxWriter implements FileWriter{
 
     public void writeStudentPlan(Path path, List<Student> students) throws IOException{
 
-        // open file writer
-        FileOutputStream file = new FileOutputStream(path.toFile());
-        Workbook workbook = new XSSFWorkbook(file);
-        Sheet sheet = workbook.getSheetAt(0);
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet();
 
         // write title
-        sheet.
+        Row titleRow = sheet.createRow(0);
+        Cell titleCell = titleRow.createCell(0, CellType.STRING);
+        titleCell.setCellValue("Schüler");
 
+        // empty row
+        sheet.createRow(1);
 
-
+        // write students
         for(Student student : students)
         {
-            file.
-            writeStudent(student);
+            addStudent(student, sheet);
         }
 
-        // close file writer
+        try (FileOutputStream fileOut = new FileOutputStream(path.toFile())) {
+            // write this workbook to an output stream
+            workbook.write(fileOut);
+            fileOut.flush();
+        }
     }
 
     public void writePresentationAttendance(Path path, List<PlannedPresentation> presentations) throws IOException{
-        // open file writer
+
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.getSheetAt(0);
 
         // write title
 
         for(PlannedPresentation presentation : presentations)
         {
-            writePresentation(presentation);
+            addPresentation(presentation, sheet);
         }
 
-        // close file writer
+        try (FileOutputStream fileOut = new FileOutputStream(path.toFile())) {
+            // write this workbook to an output stream
+            workbook.write(fileOut);
+            fileOut.flush();
+        }
     }
 
     public void writeRoomTimetable(Path path, List<PlannedPresentation> presentations) throws IOException{
@@ -60,18 +71,53 @@ public class XlsxWriter implements FileWriter{
             presentation.getRoom();
         }
 
+
         // close file writer
     }
 
-    protected void writeStudent(Student student) throws IOException
+    protected void addStudent(Student student, Sheet sheet) throws IOException
     {
+        int studentRowNum = sheet.getLastRowNum() + 1;
+        Row studentClassRow = sheet.createRow(studentRowNum);
+        studentClassRow.createCell(0).setCellValue(student.getSchoolClass());
 
+        studentRowNum ++;
+        Row studentDataRow = sheet.createRow(studentRowNum);
+        studentDataRow.createCell(0).setCellValue(student.getId());
+        studentDataRow.createCell(1).setCellValue(student.getName());
+        studentDataRow.createCell(2).setCellValue(student.getSurname());
 
+        studentRowNum ++;
+        Row timeslotRow = sheet.createRow(studentRowNum);
+        studentRowNum ++;
+        Row presentationRow = sheet.createRow(studentRowNum);
+        for(int i = 0; i < student.getPlannedPresentations().size(); i++)
+        {
+            PlannedPresentation presentation = student.getPlannedPresentations().get(i);
+            timeslotRow.createCell(i).setCellValue(presentation.getTimeslot());
+            presentationRow.createCell(i).setCellValue(presentation.getOfferedPresentation().getTitle());
+        }
     }
 
-    protected void writePresentation(PlannedPresentation presentation) throws IOException
+    protected void addPresentation(PlannedPresentation presentation, Sheet sheet) throws IOException
     {
+        OfferedPresentation presentationOffer = presentation.getOfferedPresentation();
 
+        int presentationRowNum = sheet.getLastRowNum() + 1;;
+        Row presentationDataRow = sheet.createRow(presentationRowNum);
+        presentationDataRow.createCell(0).setCellValue(presentationOffer.getCompanyName());
+        presentationDataRow.createCell(1).setCellValue("ID: " + presentationOffer.getId());
+        presentationDataRow.createCell(2).setCellValue(presentationOffer.getTitle());
+        presentationDataRow.createCell(3).setCellValue(presentationOffer.getSpecialty());
+
+        presentationRowNum++;
+        for(Student attendee : presentation.getAttendees()) {
+            presentationRowNum++;
+            Row attendeeRow = sheet.createRow(presentationRowNum);
+            attendeeRow.createCell(0).setCellValue(attendee.getId());
+            attendeeRow.createCell(1).setCellValue(attendee.getName());
+            attendeeRow.createCell(2).setCellValue(attendee.getSurname());
+        }
     }
 
 }
