@@ -25,15 +25,17 @@ public class OfferedPresentationTest {
         plannedPresentations.add(new PlannedPresentation(o2));
         plannedPresentations.add(new PlannedPresentation(o2));
         plannedPresentations.add(new PlannedPresentation(o2));
-        plannedPresentations.get(1).addStudent(new Student(null, "", "", "", 0));
-
+        plannedPresentations.get(0).addStudent(new Student(new ArrayList<>(), "", "", "", 0));
 
         o2.setPlannedPresentations(plannedPresentations);
-
         assertEquals(plannedPresentations.get(1), o2.getPlannedPresentationWithLeastAmountOfAttendees());
 
-        plannedPresentations.get(1).addStudent(new Student(null, "", "", "", 0));
-        plannedPresentations.get(2).addStudent(new Student(null, "", "", "", 0));
+        plannedPresentations.get(1).addStudent(new Student(new ArrayList<>(), "", "", "", 0));
+        assertEquals(plannedPresentations.get(2), o2.getPlannedPresentationWithLeastAmountOfAttendees());
+
+        plannedPresentations.get(2).addStudent(new Student(new ArrayList<>(), "", "", "", 0));
+        assertEquals(plannedPresentations.get(0), o2.getPlannedPresentationWithLeastAmountOfAttendees());
+
     }
 
     /**

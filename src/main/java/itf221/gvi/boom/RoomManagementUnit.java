@@ -3,15 +3,17 @@ package itf221.gvi.boom;
 import itf221.gvi.boom.data.*;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @NoArgsConstructor
 public class RoomManagementUnit {
 
     private final char lastPossibleTimeslot = 'E';
+
+    /**
+     * List for students who still have free slots after the distribution.
+     */
+    private final ArrayList<Student> unfulfilledStudents = new ArrayList<>();
 
     /**
      * <b>Deterministic</b> algorithm for distributing the offered presentations among the students considering their wishes.
@@ -23,31 +25,108 @@ public class RoomManagementUnit {
         instantiatePlannedPresentations(boomData.getCompanies());
 
         pseudoRandomizeStudentList(boomData.getStudents());
-        distributeStudentsOnPlannedPresentations(boomData);
+        distributeStudentsOnPlannedPresentations(boomData.getStudents());
+        distributeUnfulfilledStudents(boomData);
 
         return calculateCompletionScore(boomData);
     }
 
     /**
-     * @param students
+     * @param students the student list.
      */
-    protected void pseudoRandomizeStudentList(List<Student> students) {
+    protected void distributeStudentsOnPlannedPresentations(List<Student> students) {
+        for (int i = 0; i < 5; i++) {
+            for (Student student : students) {
+                PlannedPresentation wishedPlannedPresentation =
+                        student.getWishedPresentations().get(i).getPlannedPresentationWithLeastAmountOfAttendees();
 
+                addStudentToPresentation(student, wishedPlannedPresentation);
+            }
+        }
     }
 
     /**
+     * Adds student to the planned presentation. If the wish can not be granted the 6th wish will be used as a supplement.
+     * <p>
+     * In case that the 6th wish is already planned for that student or the 6th presentation is already full,
+     * the student will be added to a list of unfulfilled students.
+     *
+     * @param student            the student.
+     * @param wishedPresentation the wish.
+     */
+    protected void addStudentToPresentation(Student student, PlannedPresentation wishedPresentation) {
+        if (!wishedPresentation.addStudent(student)) {
+            boolean alreadyHas6thWish = student.getPlannedPresentations().stream()
+                    .anyMatch(plannedPresentation ->
+                            plannedPresentation.getOfferedPresentation().equals(student.getWishedPresentations().get(5))
+                    );
+
+            if (!alreadyHas6thWish) {
+                addStudentToPresentation(student, student.getWishedPresentations().get(5).getPlannedPresentationWithLeastAmountOfAttendees());
+            } else {
+                this.unfulfilledStudents.add(student);
+            }
+        } else {
+            student.getPlannedPresentations().add(wishedPresentation);
+        }
+    }
+
+    /**
+     * Distributes remaining students (unfulfilled students) to critical planned presentations.
+     * A planned presentation is considered critical when it has < min participants (but > 0).
+     * This has the purpose of making those presentations possible for the other students.
      * @param boomData
      */
-    protected void distributeStudentsOnPlannedPresentations(BoomData boomData) {
-        for (Student student : boomData.getStudents()){
-            student.getWishedPresentations().getFirst().getPlannedPresentationWithLeastAmountOfAttendees().addStudent(student);
+    protected void distributeUnfulfilledStudents(BoomData boomData) {
+        List<PlannedPresentation> allPlannedPresentations = new ArrayList<>();
+        for (Company company : boomData.getCompanies()) {
+            for (OfferedPresentation offeredPresentation : company.getOfferedPresentations()) {
+                allPlannedPresentations.addAll(offeredPresentation.getPlannedPresentations());
+            }
         }
+
+        List<PlannedPresentation> almostFullPresentations = new ArrayList<>();
+        for (PlannedPresentation plannedPresentation : allPlannedPresentations) {
+            if (plannedPresentation.getAttendees().size() < plannedPresentation.getOfferedPresentation().getMinCapacity()) {
+                almostFullPresentations.add(plannedPresentation);
+            }
+        }
+
+        almostFullPresentations.sort(Comparator.comparingInt(pres -> pres.getAttendees().size()));
+    }
+
+    /**
+     *
+     * @param almostFullPresentations
+     * @param student
+     */
+    protected void addToNextUnfilledPresentation(List<PlannedPresentation> almostFullPresentations, Student student) {
+        PlannedPresentation plannedPresentation = almostFullPresentations.getFirst();
+
+        plannedPresentation.addStudent(student);
+        unfulfilledStudents.remove(student);
+
+        if (plannedPresentation.getAttendees().size() >= plannedPresentation.getOfferedPresentation().getMinCapacity()){
+            almostFullPresentations.remove(plannedPresentation);
+        }
+    }
+
+    /**
+     * Pseudo-randomizes given list.
+     * <p>
+     * Random uses a mathematical formula to generate numbers that appear random but are entirely determined by the seed.
+     *
+     * @param students the student list.
+     */
+    protected void pseudoRandomizeStudentList(List<Student> students) {
+        Random random = new Random(12345);
+        Collections.shuffle(students, random);
     }
 
     /**
      * Initializes the PlannedPresentations and adds them into the according OfferedPresentation.
      *
-     * @param companies
+     * @param companies the company list.
      */
     protected void instantiatePlannedPresentations(List<Company> companies) {
         for (Company company : companies) {

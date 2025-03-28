@@ -20,11 +20,27 @@ public class PlannedPresentation {
     private OfferedPresentation offeredPresentation;
     private List<Student> attendees = new ArrayList<>();
 
-    public int addStudent(Student student) {
+    /**
+     * Attempts to add a student to the list of attendees.
+     *
+     * @param student the student to be added
+     * @return true if the student was successfully added, false if the max capacity has been reached
+     */
+    public boolean addStudent(Student student) {
         if (attendees.size() == offeredPresentation.getMaxCapacity()) {
-            return -1;
+            return false;
         }
         attendees.add(student);
-        return 1;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "PlannedPresentation{" +
+                "timeslot=" + timeslot +
+                ", room=" + room +
+                ", offeredPresentation=" + offeredPresentation.getId() +
+                ", attendees=" + attendees +
+                '}';
     }
 }
