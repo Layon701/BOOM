@@ -32,17 +32,28 @@ public class StudentInterpreter {
         //
         ArrayList<Student> students = new ArrayList<Student>();
         int studentId = 0;
+        System.out.println(data);
         for (List<String> row : data) {
             studentId++;
-            if (row.size() != 8) {
+            if (row.size() != 9) {
+                continue;
+            }
+
+            boolean hasEmpty = false;
+            for (String cell : row) {
+                if (cell.trim().isEmpty()) {
+                    hasEmpty = true;
+                    break;
+                }
+            }
+            if (hasEmpty) {
                 continue;
             }
 
             List<OfferedPresentation> wishes = new ArrayList<OfferedPresentation>();
-            for (int columnIndex = 3; columnIndex < 8; columnIndex++) {
+            for (int columnIndex = 3; columnIndex < 9; columnIndex++) {
                 try {
-
-                    Integer wishIndex = Integer.parseInt(row.get(columnIndex));
+                    Integer wishIndex = (int) Double.parseDouble(row.get(columnIndex));
                     OfferedPresentation presentation = presentationMap.get(wishIndex);
                     wishes.add(presentation);
                 } catch (IndexOutOfBoundsException | NumberFormatException e) {
