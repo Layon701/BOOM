@@ -32,7 +32,6 @@ public class StudentInterpreter {
         //
         ArrayList<Student> students = new ArrayList<Student>();
         int studentId = 0;
-        System.out.println(data);
         for (List<String> row : data) {
             studentId++;
             if (row.size() != 9) {
