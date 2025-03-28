@@ -1,15 +1,14 @@
 package itf221.gvi.boom;
 
-import itf221.gvi.boom.data.BoomData;
-import itf221.gvi.boom.data.Company;
-import itf221.gvi.boom.data.OfferedPresentation;
-import itf221.gvi.boom.data.PlannedPresentation;
-import itf221.gvi.boom.data.Student;
+import itf221.gvi.boom.data.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -93,5 +92,78 @@ public class RoomManagementUnitTest {
         int expectedValue = 80;
         int actualValue = roomManagementUnit.calculateCompletionScore(boomData);
         assertEquals(expectedValue, actualValue);
+    }
+
+    @Test
+    public void testPolizeiAlwaysGetsAula() {
+        // Erstelle Räume, darunter einen mit roomNumber "aula"
+        Room aula = new Room("Aula", 100);
+        Room room2 = new Room("R2", 150);
+        List<Room> rooms = Arrays.asList(aula, room2);
+
+        // Erstelle eine OfferedPresentation für die Firma "Polizei"
+        OfferedPresentation op = new OfferedPresentation(1, 50, 200, "Sicherheit", 'A', "Polizei");
+        op.setAmountOfPresentations(1);
+
+        // Erstelle die Company "Polizei" mit der OfferedPresentation
+        Company polizei = new Company("Polizei", List.of(op));
+        List<Company> companies = List.of(polizei);
+
+        // Keine Studenten erforderlich für diesen Test
+        List<Student> students = new ArrayList<>();
+
+        BoomData boomData = new BoomData(rooms, companies, students);
+        RoomManagementUnit rmu = new RoomManagementUnit();
+
+        // Direkter Aufruf der eigenen Methode (da execute nicht verändert wird)
+        rmu.setTimeslotAndRoom(boomData);
+
+        // Verifiziere, dass plannedPresentations initialisiert und gefüllt wurde
+        assertNotNull(op.getPlannedPresentations(), "Planned presentations should not be null");
+        assertEquals(1, op.getPlannedPresentations().size(), "Es sollte genau 1 geplante Präsentation vorhanden sein");
+        PlannedPresentation pp = op.getPlannedPresentations().getFirst();
+        assertEquals("Aula", pp.getRoom().getRoomNumber(), "Die Firma Polizei muss den Raum 'Aula' erhalten");
+    }
+
+    @Test
+    public void testContiguousTimeslotsAndNoOverbooking() {
+        // Erstelle einen Raum
+        Room room1 = new Room("R1", 150);
+        List<Room> rooms = List.of(room1);
+
+        // Erstelle eine OfferedPresentation mit earliestTime 'A' und amountOfPresentations 3
+        OfferedPresentation op = new OfferedPresentation(2, 50, 200, "Technology", 'A', "TechCompany");
+        op.setAmountOfPresentations(3);
+
+        // Simuliere, dass bereits eine PlannedPresentation (z.B. aus einem früheren Lauf) existiert
+        List<PlannedPresentation> preScheduled = new ArrayList<>();
+        preScheduled.add(new PlannedPresentation('A', room1, op, new ArrayList<>()));
+        op.setPlannedPresentations(preScheduled);
+
+        // Erstelle die Company mit der OfferedPresentation
+        Company company = new Company("TechCompany", List.of(op));
+        List<Company> companies = List.of(company);
+
+        List<Student> students = new ArrayList<>();
+        BoomData boomData = new BoomData(rooms, companies, students);
+
+        RoomManagementUnit rmu = new RoomManagementUnit();
+        // Direktaufruf der eigenen Methode
+        rmu.setTimeslotAndRoom(boomData);
+
+        // Die OfferedPresentation sollte genau 3 PlannedPresentations enthalten
+        assertEquals(3, op.getPlannedPresentations().size(), "Die OfferedPresentation sollte voll mit 3 geplanten Präsentationen sein");
+
+        // Überprüfe, dass die zugewiesenen Zeiten lückenlos (zusammenhängend) sind
+        List<Character> timeslots = new ArrayList<>();
+        for (PlannedPresentation pp : op.getPlannedPresentations()) {
+            timeslots.add(pp.getTimeslot());
+        }
+        Collections.sort(timeslots);
+        // Bei zusammenhängender Zuweisung sollten die Zeitfenster z. B. A, B, C lauten
+        System.out.println(timeslots);
+        assertEquals('A', timeslots.get(0));
+        assertEquals('B', timeslots.get(1));
+        assertEquals('C', timeslots.get(2));
     }
 }
