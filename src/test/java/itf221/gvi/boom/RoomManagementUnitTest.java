@@ -9,7 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -167,5 +169,22 @@ public class RoomManagementUnitTest {
         assertEquals('A', timeslots.get(0));
         assertEquals('B', timeslots.get(1));
         assertEquals('C', timeslots.get(2));
+    }
+
+    /**
+     * Tests the pseudo random sorting of students list.
+     * Random seed has to be same as in RoomManagementUnit!
+     */
+    @Test
+    public void pseudoRandomizeStudentListTest() {
+        RoomManagementUnit roomManagementUnit = new RoomManagementUnit();
+        List<Student> students = createStudents(null, 200);
+        roomManagementUnit.pseudoRandomizeStudentList(students);
+
+        List<Student> students2 = createStudents(null, 200);
+        Random random = new Random(12345);
+        Collections.shuffle(students2, random);
+
+        assertEquals(students, students2);
     }
 }

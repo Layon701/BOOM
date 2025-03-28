@@ -42,5 +42,20 @@ public class OfferedPresentation {
     public String getTitle() {
         return String.format("%s: %s", this.getCompanyName(), this.getSpecialty());
     }
+
+
+    @Override
+    public String toString() {
+        return "OfferedPresentation{" +
+                "id=" + id +
+                ", minCapacity=" + minCapacity +
+                ", maxCapacity=" + maxCapacity +
+                ", specialty='" + specialty + '\'' +
+                ", earliestTime=" + earliestTime +
+                ", companyName='" + companyName + '\'' +
+                ", plannedPresentations=" + plannedPresentations +
+                ", amountOfPresentations=" + amountOfPresentations +
+                '}';
+    }
 }
 
