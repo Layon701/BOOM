@@ -44,14 +44,9 @@ public class MainController {
     }
 
     private void switchToLoadingView(ActionEvent event) throws IOException {
-        // Load new FXML file
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/itf221/gvi/boom/fxml/loading-view.fxml"));
         Parent root = fxmlLoader.load();
-
-        // Get the current stage from the event
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-        // Set the new scene
         stage.setScene(new Scene(root));
         stage.show();
     }
@@ -59,11 +54,8 @@ public class MainController {
     @FXML
     private void openDocumentation() {
         File pdfFile = new File("src/main/resources/itf221/gvi/boom/documentation/Benutzerdoku.pdf");
-
-        // Check if the file exists
         if (pdfFile.exists()) {
             try {
-                // Open the PDF file in the default system application
                 Desktop.getDesktop().open(pdfFile);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -78,15 +70,9 @@ public class MainController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Excel File");
 
-        // Set file extension filters
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Excel Files", "*.xlsx", "*.xls")
-        );
-
-        // Open the file dialog
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx", "*.xls"));
         File selectedFile = fileChooser.showOpenDialog(new Stage());
 
-        // Handle the selected file
         if (selectedFile != null) {
             Object source = event.getSource();
             if (source == sw_browse_button) {
