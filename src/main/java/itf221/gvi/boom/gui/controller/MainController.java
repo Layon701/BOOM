@@ -16,6 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Controller class for managing user interactions in the main view of the application.
+ */
 public class MainController {
     @FXML
     Button sw_browse_button;
@@ -38,11 +41,21 @@ public class MainController {
     @FXML
     TextArea rp_import_field;
 
+    /**
+     * Initializes the 'start' process by switching to the loading view.
+     * @param event The ActionEvent triggered by the user action.
+     * @throws IOException If there is an error while loading the view.
+     */
     @FXML
-    private void initImport(ActionEvent event) throws IOException {
+    private void initStart(ActionEvent event) throws IOException {
         switchToLoadingView(event);
     }
 
+    /**
+     * Switches to the loading view. It loads the loading-view FXML file and sets it as the scene for the current stage.
+     * @param event The ActionEvent triggered by the user action.
+     * @throws IOException If there is an error while loading the FXML file.
+     */
     private void switchToLoadingView(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/itf221/gvi/boom/fxml/loading-view.fxml"));
         Parent root = fxmlLoader.load();
@@ -51,6 +64,9 @@ public class MainController {
         stage.show();
     }
 
+    /**
+     * Opens the user documentation PDF file.
+     */
     @FXML
     private void openDocumentation() {
         File pdfFile = new File("src/main/resources/itf221/gvi/boom/documentation/Benutzerdoku.pdf");
@@ -65,6 +81,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Opens a file chooser to select an Excel file.
+     * Based on the button clicked, the path of the selected file is displayed in the corresponding text area.
+     * Enables the 'start' button if all three file paths are selected.
+     * @param event The ActionEvent triggered by the user action.
+     */
     @FXML
     private void openFileChooser(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -85,6 +107,7 @@ public class MainController {
         } else {
             System.out.println("File selection canceled.");
         }
+        // Enables or disables the import button based on whether all paths are selected
         if(!Objects.equals(sw_import_field.getText(), "") && !Objects.equals(ul_import_field.getText(), "") && !Objects.equals(rp_import_field.getText(), "")) {
             import_button.setDisable(false);
         } else {
