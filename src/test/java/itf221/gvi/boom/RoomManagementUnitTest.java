@@ -96,51 +96,43 @@ public class RoomManagementUnitTest {
 
     @Test
     public void testPolizeiAlwaysGetsAula() {
-        // Erstelle Räume, darunter einen mit roomNumber "aula"
         Room aula = new Room("Aula", 100);
         Room room2 = new Room("R2", 150);
         List<Room> rooms = Arrays.asList(aula, room2);
 
-        // Erstelle eine OfferedPresentation für die Firma "Polizei"
-        OfferedPresentation op = new OfferedPresentation(1, 50, 200, "Sicherheit", 'A', "Polizei");
+        OfferedPresentation op = new OfferedPresentation(1, 50, 200, "Anzeigenhauptmeister", 'A', "Polizei");
         op.setAmountOfPresentations(1);
 
-        // Erstelle die Company "Polizei" mit der OfferedPresentation
         Company polizei = new Company("Polizei", List.of(op));
         List<Company> companies = List.of(polizei);
 
-        // Keine Studenten erforderlich für diesen Test
         List<Student> students = new ArrayList<>();
 
         BoomData boomData = new BoomData(rooms, companies, students);
         RoomManagementUnit rmu = new RoomManagementUnit();
 
-        // Direkter Aufruf der eigenen Methode (da execute nicht verändert wird)
         rmu.setTimeslotAndRoom(boomData);
 
-        // Verifiziere, dass plannedPresentations initialisiert und gefüllt wurde
+        // verify that plannedPresentations are initialized and filled
         assertNotNull(op.getPlannedPresentations(), "Planned presentations should not be null");
-        assertEquals(1, op.getPlannedPresentations().size(), "Es sollte genau 1 geplante Präsentation vorhanden sein");
+        assertEquals(1, op.getPlannedPresentations().size(), "exactly one plannedPresentation should be here");
         PlannedPresentation pp = op.getPlannedPresentations().getFirst();
-        assertEquals("Aula", pp.getRoom().getRoomNumber(), "Die Firma Polizei muss den Raum 'Aula' erhalten");
+        assertEquals("Aula", pp.getRoom().getRoomNumber(), "Company 'Polizei' should receive room 'Aula'");
     }
 
     @Test
     public void testContiguousTimeslotsAndNoOverbooking() {
-        // Erstelle einen Raum
         Room room1 = new Room("R1", 150);
         List<Room> rooms = List.of(room1);
 
-        // Erstelle eine OfferedPresentation mit earliestTime 'A' und amountOfPresentations 3
         OfferedPresentation op = new OfferedPresentation(2, 50, 200, "Technology", 'A', "TechCompany");
         op.setAmountOfPresentations(3);
 
-        // Simuliere, dass bereits eine PlannedPresentation (z.B. aus einem früheren Lauf) existiert
+        // simulate that one presentation already exists
         List<PlannedPresentation> preScheduled = new ArrayList<>();
         preScheduled.add(new PlannedPresentation('A', room1, op, new ArrayList<>()));
         op.setPlannedPresentations(preScheduled);
 
-        // Erstelle die Company mit der OfferedPresentation
         Company company = new Company("TechCompany", List.of(op));
         List<Company> companies = List.of(company);
 
@@ -148,19 +140,16 @@ public class RoomManagementUnitTest {
         BoomData boomData = new BoomData(rooms, companies, students);
 
         RoomManagementUnit rmu = new RoomManagementUnit();
-        // Direktaufruf der eigenen Methode
         rmu.setTimeslotAndRoom(boomData);
 
-        // Die OfferedPresentation sollte genau 3 PlannedPresentations enthalten
-        assertEquals(3, op.getPlannedPresentations().size(), "Die OfferedPresentation sollte voll mit 3 geplanten Präsentationen sein");
+        assertEquals(3, op.getPlannedPresentations().size(), "The OfferedPresentation should have 3 planned presentations");
 
-        // Überprüfe, dass die zugewiesenen Zeiten lückenlos (zusammenhängend) sind
+        // check that timeslots are consecutive
         List<Character> timeslots = new ArrayList<>();
         for (PlannedPresentation pp : op.getPlannedPresentations()) {
             timeslots.add(pp.getTimeslot());
         }
         Collections.sort(timeslots);
-        // Bei zusammenhängender Zuweisung sollten die Zeitfenster z. B. A, B, C lauten
         System.out.println(timeslots);
         assertEquals('A', timeslots.get(0));
         assertEquals('B', timeslots.get(1));
