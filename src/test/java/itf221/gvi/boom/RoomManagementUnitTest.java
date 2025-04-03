@@ -1,15 +1,14 @@
 package itf221.gvi.boom;
 
-import itf221.gvi.boom.data.BoomData;
-import itf221.gvi.boom.data.Company;
-import itf221.gvi.boom.data.OfferedPresentation;
-import itf221.gvi.boom.data.PlannedPresentation;
-import itf221.gvi.boom.data.Student;
+import itf221.gvi.boom.data.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -93,5 +92,67 @@ public class RoomManagementUnitTest {
         int expectedValue = 80;
         int actualValue = roomManagementUnit.calculateCompletionScore(boomData);
         assertEquals(expectedValue, actualValue);
+    }
+
+    @Test
+    public void testPolizeiAlwaysGetsAula() {
+        Room aula = new Room("Aula", 100);
+        Room room2 = new Room("R2", 150);
+        List<Room> rooms = Arrays.asList(aula, room2);
+
+        OfferedPresentation op = new OfferedPresentation(1, 50, 200, "Anzeigenhauptmeister", 'A', "Polizei");
+        op.setAmountOfPresentations(1);
+
+        Company polizei = new Company("Polizei", List.of(op));
+        List<Company> companies = List.of(polizei);
+
+        List<Student> students = new ArrayList<>();
+
+        BoomData boomData = new BoomData(rooms, companies, students);
+        RoomManagementUnit rmu = new RoomManagementUnit();
+
+        rmu.setTimeslotAndRoom(boomData);
+
+        // verify that plannedPresentations are initialized and filled
+        assertNotNull(op.getPlannedPresentations(), "Planned presentations should not be null");
+        assertEquals(1, op.getPlannedPresentations().size(), "exactly one plannedPresentation should be here");
+        PlannedPresentation pp = op.getPlannedPresentations().getFirst();
+        assertEquals("Aula", pp.getRoom().getRoomNumber(), "Company 'Polizei' should receive room 'Aula'");
+    }
+
+    @Test
+    public void testContiguousTimeslotsAndNoOverbooking() {
+        Room room1 = new Room("R1", 150);
+        List<Room> rooms = List.of(room1);
+
+        OfferedPresentation op = new OfferedPresentation(2, 50, 200, "Technology", 'A', "TechCompany");
+        op.setAmountOfPresentations(3);
+
+        // simulate that one presentation already exists
+        List<PlannedPresentation> preScheduled = new ArrayList<>();
+        preScheduled.add(new PlannedPresentation('A', room1, op, new ArrayList<>()));
+        op.setPlannedPresentations(preScheduled);
+
+        Company company = new Company("TechCompany", List.of(op));
+        List<Company> companies = List.of(company);
+
+        List<Student> students = new ArrayList<>();
+        BoomData boomData = new BoomData(rooms, companies, students);
+
+        RoomManagementUnit rmu = new RoomManagementUnit();
+        rmu.setTimeslotAndRoom(boomData);
+
+        assertEquals(3, op.getPlannedPresentations().size(), "The OfferedPresentation should have 3 planned presentations");
+
+        // check that timeslots are consecutive
+        List<Character> timeslots = new ArrayList<>();
+        for (PlannedPresentation pp : op.getPlannedPresentations()) {
+            timeslots.add(pp.getTimeslot());
+        }
+        Collections.sort(timeslots);
+        System.out.println(timeslots);
+        assertEquals('A', timeslots.get(0));
+        assertEquals('B', timeslots.get(1));
+        assertEquals('C', timeslots.get(2));
     }
 }

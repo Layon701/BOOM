@@ -34,9 +34,9 @@ public class CompanyInterpreter {
 
 
             try {
-                int id = Integer.parseInt(row.get(0));
+                int id = (int) Double.parseDouble(row.get(0));
                 int minCapacity = 0;
-                int maxCapacity = Integer.parseInt(row.get(3));
+                int maxCapacity = (int) Double.parseDouble(row.get(3));
                 String specialty = row.get(2);
                 char earliestTime = row.get(5).charAt(0);
 
