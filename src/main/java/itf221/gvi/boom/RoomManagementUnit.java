@@ -75,28 +75,54 @@ public class RoomManagementUnit {
      * Distributes remaining students (unfulfilled students) to critical planned presentations.
      * A planned presentation is considered critical when it has < min participants (but > 0).
      * This has the purpose of making those presentations possible for the other students.
-     * @param boomData
+     *
+     * @param boomData the data.
      */
     protected void distributeUnfulfilledStudents(BoomData boomData) {
-        List<PlannedPresentation> allPlannedPresentations = new ArrayList<>();
+        List<PlannedPresentation> allIncompletePlannedPresentations = new ArrayList<>();
         for (Company company : boomData.getCompanies()) {
             for (OfferedPresentation offeredPresentation : company.getOfferedPresentations()) {
-                allPlannedPresentations.addAll(offeredPresentation.getPlannedPresentations());
+                allIncompletePlannedPresentations.addAll(offeredPresentation.getPlannedPresentations());
             }
         }
 
         List<PlannedPresentation> almostFullPresentations = new ArrayList<>();
-        for (PlannedPresentation plannedPresentation : allPlannedPresentations) {
+        for (PlannedPresentation plannedPresentation : allIncompletePlannedPresentations) {
             if (plannedPresentation.getAttendees().size() < plannedPresentation.getOfferedPresentation().getMinCapacity()) {
                 almostFullPresentations.add(plannedPresentation);
+            } else if (plannedPresentation.getAttendees().size() == plannedPresentation.getOfferedPresentation().getMaxCapacity()) {
+                allIncompletePlannedPresentations.remove(plannedPresentation);
             }
         }
 
+
+        // put the value closest to min capacity to beginning
         almostFullPresentations.sort(Comparator.comparingInt(pres -> pres.getAttendees().size()));
+        almostFullPresentations.reversed();
+
+        // distribute students on almost full presentations
+        for (Student student : unfulfilledStudents) {
+            if (!almostFullPresentations.isEmpty()) {
+                addToNextUnfilledPresentation(almostFullPresentations, student);
+            }
+            for (PlannedPresentation plannedPresentation : allIncompletePlannedPresentations) {
+                plannedPresentation.addStudent(student);
+                student.getPlannedPresentations().add(plannedPresentation);
+                if (plannedPresentation.getAttendees().size() == plannedPresentation.getOfferedPresentation().getMaxCapacity()) {
+                    allIncompletePlannedPresentations.remove(plannedPresentation);
+                }
+            }
+        }
+
+        // collect remaining students from unfilledPresentations
+        for (PlannedPresentation plannedPresentation : almostFullPresentations) {
+            for (Student student : plannedPresentation.getAttendees()) {
+
+            }
+        }
     }
 
     /**
-     *
      * @param almostFullPresentations
      * @param student
      */
@@ -104,11 +130,16 @@ public class RoomManagementUnit {
         PlannedPresentation plannedPresentation = almostFullPresentations.getFirst();
 
         plannedPresentation.addStudent(student);
+        student.getPlannedPresentations().add(plannedPresentation);
         unfulfilledStudents.remove(student);
 
-        if (plannedPresentation.getAttendees().size() >= plannedPresentation.getOfferedPresentation().getMinCapacity()){
+        if (plannedPresentation.getAttendees().size() >= plannedPresentation.getOfferedPresentation().getMinCapacity()) {
             almostFullPresentations.remove(plannedPresentation);
         }
+    }
+
+    protected void addStudentsToIncompletePresentation() {
+
     }
 
     /**
