@@ -19,6 +19,11 @@ import java.util.Random;
  */
 public class RoomManagementUnitTest {
 
+    @Test
+    public void distributeStudentsTest(){
+
+    }
+
 
     /**
      * Tests the setRequiredPresentationAmount() method
