@@ -53,33 +53,28 @@
         </menus>
       </MenuBar>
       <TextArea fx:id="sw_import_field" editable="false" focusTraversable="false" layoutX="250.0" layoutY="157.0" prefHeight="35.0" prefWidth="219.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="150.0" />
-      <TextArea fx:id="ul_import_field" editable="false" focusTraversable="false" layoutX="180.0" layoutY="257.0" prefHeight="35.0" prefWidth="219.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="260.0">
-         <cursor>
-            <Cursor fx:constant="DEFAULT" />
-         </cursor></TextArea>
-      <TextArea fx:id="rp_import_field" editable="false" focusTraversable="false" layoutX="180.0" layoutY="364.0" prefHeight="35.0" prefWidth="219.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="370.0">
-         <cursor>
-            <Cursor fx:constant="DEFAULT" />
-         </cursor></TextArea>
+      <TextArea fx:id="ul_import_field" editable="false" focusTraversable="false" layoutX="180.0" layoutY="257.0" prefHeight="35.0" prefWidth="219.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="260.0"/>
+      <TextArea fx:id="rp_import_field" editable="false" focusTraversable="false" layoutX="180.0" layoutY="364.0" prefHeight="35.0" prefWidth="219.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="370.0"/>
       <Button fx:id="sw_browse_button" focusTraversable="false" layoutX="510.0" layoutY="151.0" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="35.0" prefWidth="94.0" text="Durchsuchen" AnchorPane.leftAnchor="510.0" AnchorPane.topAnchor="150.0">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
          <cursor>
             <Cursor fx:constant="HAND" />
-         </cursor></Button>
+         </cursor>
+      </Button>
       <Button id="ul_browse_button" fx:id="ul_browse_button" focusTraversable="false" layoutX="510.0" layoutY="262.0" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="35.0" prefWidth="94.0" text="Durchsuchen" AnchorPane.leftAnchor="510.0" AnchorPane.topAnchor="260.0">
          <cursor>
             <Cursor fx:constant="HAND" />
-         </cursor></Button>
+         </cursor>
+      </Button>
       <Button id="rp_browse_button" fx:id="rp_browse_button" focusTraversable="false" layoutX="510.0" layoutY="372.0" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="35.0" prefWidth="94.0" text="Durchsuchen" AnchorPane.leftAnchor="510.0" AnchorPane.topAnchor="370.0">
          <cursor>
             <Cursor fx:constant="HAND" />
-         </cursor></Button>
+         </cursor>
+      </Button>
       <Button id="import_button" fx:id="import_button" disable="true" focusTraversable="false" layoutX="624.0" layoutY="453.0" mnemonicParsing="false" onAction="#initStart" prefHeight="35.0" prefWidth="63.0" text="Starten" AnchorPane.topAnchor="475.0">
          <cursor>
             <Cursor fx:constant="HAND" />
-         </cursor></Button>
+         </cursor>
+      </Button>
       <MenuBar prefHeight="25.0" prefWidth="710.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="Hilfe">
