@@ -66,8 +66,6 @@ public class RoomManagementUnit {
             } else {
                 this.unfulfilledStudents.add(student);
             }
-        } else {
-            student.getPlannedPresentations().add(wishedPresentation);
         }
     }
 
@@ -79,67 +77,86 @@ public class RoomManagementUnit {
      * @param boomData the data.
      */
     protected void distributeUnfulfilledStudents(BoomData boomData) {
-        List<PlannedPresentation> allIncompletePlannedPresentations = new ArrayList<>();
-        for (Company company : boomData.getCompanies()) {
-            for (OfferedPresentation offeredPresentation : company.getOfferedPresentations()) {
-                allIncompletePlannedPresentations.addAll(offeredPresentation.getPlannedPresentations());
-            }
-        }
+        // get all planned presentations from companies
+        List<PlannedPresentation> allPlannedPresentations = getAllPlannedPresentations(boomData);
 
-        List<PlannedPresentation> almostFullPresentations = new ArrayList<>();
-        for (PlannedPresentation plannedPresentation : allIncompletePlannedPresentations) {
-            if (plannedPresentation.getAttendees().size() < plannedPresentation.getOfferedPresentation().getMinCapacity()) {
-                almostFullPresentations.add(plannedPresentation);
-            } else if (plannedPresentation.getAttendees().size() == plannedPresentation.getOfferedPresentation().getMaxCapacity()) {
-                allIncompletePlannedPresentations.remove(plannedPresentation);
-            }
-        }
-
+        // get planned presentations that are close to be held
+        List<PlannedPresentation> almostRealizablePresentations = new ArrayList<>(allPlannedPresentations.stream()
+                .filter(pres -> pres.getAttendees().size() < pres.getOfferedPresentation().getMinCapacity())
+                .toList());
 
         // put the value closest to min capacity to beginning
-        almostFullPresentations.sort(Comparator.comparingInt(pres -> pres.getAttendees().size()));
-        almostFullPresentations.reversed();
+        almostRealizablePresentations.sort(
+                Comparator.comparingInt((PlannedPresentation pres) -> pres.getAttendees().size()).reversed()
+        );
 
-        // distribute students on almost full presentations
-        for (Student student : unfulfilledStudents) {
-            if (!almostFullPresentations.isEmpty()) {
-                addToNextUnfilledPresentation(almostFullPresentations, student);
-            }
-            for (PlannedPresentation plannedPresentation : allIncompletePlannedPresentations) {
-                plannedPresentation.addStudent(student);
-                student.getPlannedPresentations().add(plannedPresentation);
-                if (plannedPresentation.getAttendees().size() == plannedPresentation.getOfferedPresentation().getMaxCapacity()) {
-                    allIncompletePlannedPresentations.remove(plannedPresentation);
+        // distribute unfilled students on the almost realizable Presentations
+        Iterator<Student> studentIterator = unfulfilledStudents.iterator();
+        while (studentIterator.hasNext()) {
+            Student student = studentIterator.next();
+            if (!almostRealizablePresentations.isEmpty()) {
+                addToNextUnfilledPresentation(almostRealizablePresentations, student);
+                studentIterator.remove();
+            } else {
+                for (PlannedPresentation pres : allPlannedPresentations) {
+                    if (pres.addStudent(student)) {
+                        break;
+                    }
                 }
             }
         }
 
-        // collect remaining students from unfilledPresentations
-        for (PlannedPresentation plannedPresentation : almostFullPresentations) {
-            for (Student student : plannedPresentation.getAttendees()) {
+        // collect remaining students from the almostRealizablePresentations and distribute those on next open spots
+        redistributeStudentsFromUnrealizablePresentations(almostRealizablePresentations, allPlannedPresentations);
+    }
 
+    /**
+     * @param almostRealizablePresentations the presentations that are under the min capacity.
+     * @param student                       the student to add.
+     */
+    protected void addToNextUnfilledPresentation(List<PlannedPresentation> almostRealizablePresentations, Student student) {
+        PlannedPresentation nextAlmostRealizablePresentation = almostRealizablePresentations.getFirst();
+
+        nextAlmostRealizablePresentation.addStudent(student);
+        unfulfilledStudents.remove(student);
+
+        if (nextAlmostRealizablePresentation.getAttendees().size() >= nextAlmostRealizablePresentation.getOfferedPresentation().getMinCapacity()) {
+            almostRealizablePresentations.remove(nextAlmostRealizablePresentation);
+        }
+    }
+
+    /**
+     * Distributes students from unrealizable presentations to other open slots.
+     *
+     * @param unrealizablePresentations Presentations that have not reached the minimum number of participants.
+     * @param allPresentations          All scheduled presentations.
+     */
+    private void redistributeStudentsFromUnrealizablePresentations(List<PlannedPresentation> unrealizablePresentations,
+                                                                   List<PlannedPresentation> allPresentations) {
+        for (PlannedPresentation pres : unrealizablePresentations) {
+            List<Student> studentsToReassign = new ArrayList<>(pres.getAttendees());
+            for (Student student : studentsToReassign) {
+                for (PlannedPresentation targetPres : allPresentations) {
+                    if (targetPres != pres && targetPres.addStudent(student)) {
+                        pres.removeStudent(student);
+                        break;
+                    }
+                }
             }
         }
     }
 
     /**
-     * @param almostFullPresentations
-     * @param student
+     * Collects all planned presentations from the companies.
      */
-    protected void addToNextUnfilledPresentation(List<PlannedPresentation> almostFullPresentations, Student student) {
-        PlannedPresentation plannedPresentation = almostFullPresentations.getFirst();
-
-        plannedPresentation.addStudent(student);
-        student.getPlannedPresentations().add(plannedPresentation);
-        unfulfilledStudents.remove(student);
-
-        if (plannedPresentation.getAttendees().size() >= plannedPresentation.getOfferedPresentation().getMinCapacity()) {
-            almostFullPresentations.remove(plannedPresentation);
+    private List<PlannedPresentation> getAllPlannedPresentations(BoomData boomData) {
+        List<PlannedPresentation> presentations = new ArrayList<>();
+        for (Company company : boomData.getCompanies()) {
+            for (OfferedPresentation offered : company.getOfferedPresentations()) {
+                presentations.addAll(offered.getPlannedPresentations());
+            }
         }
-    }
-
-    protected void addStudentsToIncompletePresentation() {
-
+        return presentations;
     }
 
     /**
