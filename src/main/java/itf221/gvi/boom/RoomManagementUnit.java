@@ -243,9 +243,9 @@ public class RoomManagementUnit {
                     studentScore += (6 - i);
                 }
             }
+            System.out.println(student);
             totalScore += studentScore;
         }
-
         double scorePercentage = totalScore * 5.0 / studentList.size();
         System.out.println("Total score:" + scorePercentage + "%");
         return scorePercentage;
@@ -342,7 +342,7 @@ public class RoomManagementUnit {
                     for (int i = blockStart; i < blockStart + presentationsToSchedule; i++) {
                         schedule[i] = true;
                         char timeslot = (char) ('A' + i);
-                        PlannedPresentation pp = new PlannedPresentation(timeslot, assignedRoom, op, new ArrayList<>());
+                        PlannedPresentation pp = new PlannedPresentation(op);
                         op.getPlannedPresentations().add(pp);
                     }
                 } else {
@@ -465,7 +465,7 @@ public class RoomManagementUnit {
             if (!schedule[i]) {
                 schedule[i] = true;
                 char timeslot = (char) ('A' + i);
-                PlannedPresentation pp = new PlannedPresentation(timeslot, assignedRoom, op, new ArrayList<>());
+                PlannedPresentation pp = new PlannedPresentation(op);
                 op.getPlannedPresentations().add(pp);
                 scheduledCount++;
             }

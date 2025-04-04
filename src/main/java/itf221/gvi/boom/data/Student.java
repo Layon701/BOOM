@@ -27,4 +27,11 @@ public class Student {
         this.schoolClass = schoolClass;
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "plannedPresentations=" + plannedPresentations +
+                ", wishedPresentations=" + wishedPresentations;
+    }
 }
