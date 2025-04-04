@@ -8,12 +8,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="itf221.gvi.boom.gui.controller.LoadingController">
    <children>
-      <Label layoutX="274.0" layoutY="51.0" text="Loading..." AnchorPane.leftAnchor="274.0" AnchorPane.topAnchor="51.0">
+      <Label layoutX="305.0" layoutY="49.0" text="Loading..." AnchorPane.topAnchor="50.0">
          <font>
-            <Font size="24.0" />
+            <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="export_view_button" layoutX="297.0" layoutY="453.0" mnemonicParsing="false" onAction="#initLoading" text="Export-View" AnchorPane.leftAnchor="297.0" AnchorPane.topAnchor="453.0" />
-      <ProgressIndicator disable="true" layoutX="324.0" layoutY="236.0" prefHeight="250.0" prefWidth="250.0" progress="0.33" />
+      <Button fx:id="export_view_button" layoutX="315.0" layoutY="454.0" mnemonicParsing="false" onAction="#initLoading" text="Export-View" AnchorPane.leftAnchor="315.0" AnchorPane.topAnchor="454.0" />
+      <ProgressIndicator disable="true" layoutX="342.0" layoutY="267.0" prefHeight="250.0" prefWidth="250.0" progress="0.33" AnchorPane.leftAnchor="342.0" AnchorPane.topAnchor="267.0" />
    </children>
 </AnchorPane>
