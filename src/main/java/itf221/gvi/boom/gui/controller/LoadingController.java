@@ -39,7 +39,14 @@ public class LoadingController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/itf221/gvi/boom/fxml/export-view.fxml"));
         Parent root = fxmlLoader.load();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
+
+        double stageWidth = stage.getWidth();
+        double stageHeight = stage.getHeight();
+
+        stage.setWidth(stageWidth);
+        stage.setHeight(stageHeight);
+
+        stage.setScene(new Scene(root, stageWidth, stageHeight));
         stage.show();
     }
 }
