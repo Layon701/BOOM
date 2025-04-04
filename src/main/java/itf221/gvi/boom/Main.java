@@ -16,6 +16,7 @@ public class Main extends Application {
         Image icon = new Image(String.valueOf(getClass().getResource("/itf221/gvi/boom/images/boom.png")));
         stage.getIcons().add(icon);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
