@@ -46,16 +46,7 @@ public class OfferedPresentation {
 
     @Override
     public String toString() {
-        return "OfferedPresentation{" +
-                "id=" + id +
-                ", minCapacity=" + minCapacity +
-                ", maxCapacity=" + maxCapacity +
-                ", specialty='" + specialty + '\'' +
-                ", earliestTime=" + earliestTime +
-                ", companyName='" + companyName + '\'' +
-                ", plannedPresentations=" + plannedPresentations +
-                ", amountOfPresentations=" + amountOfPresentations +
-                '}';
+        return String.valueOf(id);
     }
 }
 
