@@ -20,7 +20,7 @@ public class RoomManagementUnit {
      *
      * @param boomData the data holding the presentations, the student wishes and the available rooms.
      */
-    public int execute(BoomData boomData) {
+    public double execute(BoomData boomData) {
         setRequiredPresentationAmount(boomData);
         instantiatePlannedPresentations(boomData.getCompanies());
 
