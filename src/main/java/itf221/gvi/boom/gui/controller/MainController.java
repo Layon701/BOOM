@@ -47,9 +47,9 @@ public class MainController {
     TextArea rp_import_field;
 
     /**
-     * Initializes the 'start' process by switching to the loading view.
+     * Initializes the 'start' process by switching to the loading view and executing the distribution algorithm.
      * @param event The ActionEvent triggered by the user action.
-     * @throws IOException If there is an error while loading the view.
+     * @throws IOException If there is an error while loading the view or executing the distribution algorithm.
      */
     @FXML
     private void initStart(ActionEvent event) throws IOException {
@@ -57,6 +57,9 @@ public class MainController {
         runDistributionAlg();
     }
 
+    /**
+     * Executes the distribution algorithm.
+     */
     @FXML
     private void runDistributionAlg() {
         IOManager ioManager = new IOManager(
@@ -69,6 +72,10 @@ public class MainController {
         roomManagementUnit.execute(boomData);
     }
 
+    /**
+     * Returns the output path to the user's default "Downloads" folder.
+     * @return The Path to the "Downloads" folder of the current user.
+     */
     public Path getDownloadFolderPath() {
         String userHome = System.getProperty("user.home");
         return Paths.get(userHome, "Downloads");
@@ -83,7 +90,14 @@ public class MainController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/itf221/gvi/boom/fxml/loading-view.fxml"));
         Parent root = fxmlLoader.load();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
+
+        double stageWidth = stage.getWidth();
+        double stageHeight = stage.getHeight();
+
+        stage.setWidth(stageWidth);
+        stage.setHeight(stageHeight);
+
+        stage.setScene(new Scene(root, stageWidth, stageHeight));
         stage.show();
     }
 
