@@ -47,6 +47,12 @@ public class PlannedPresentation {
 
     @Override
     public String toString() {
-        return String.valueOf(offeredPresentation.getId());
+        return "PlannedPresentation{" +
+                "timeslot=" + timeslot +
+                ", room=" + room +
+                ", offeredPresentation=" + offeredPresentation.getId() +
+                ", attendees=" + attendees +
+                '}';
+        // return String.valueOf(offeredPresentation.getId());
     }
 }
