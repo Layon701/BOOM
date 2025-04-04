@@ -1,5 +1,6 @@
 package itf221.gvi.boom.io.writer;
 
+import itf221.gvi.boom.data.OfferedPresentation;
 import itf221.gvi.boom.data.PlannedPresentation;
 import itf221.gvi.boom.data.Student;
 
@@ -12,5 +13,5 @@ public interface FileWriter {
 
     void writePresentationAttendance(Path path, List<PlannedPresentation> presentations) throws IOException;
 
-    void writeRoomTimetable(Path path, List<PlannedPresentation> presentations) throws IOException;
+    void writeRoomTimetable(Path path, List<OfferedPresentation> presentations) throws IOException;
 }

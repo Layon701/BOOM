@@ -9,6 +9,7 @@ import itf221.gvi.boom.data.PlannedPresentation;
 import itf221.gvi.boom.data.Student;
 import itf221.gvi.boom.io.writer.FileWriter;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -35,6 +36,9 @@ public class XlsxWriter implements FileWriter{
             addStudent(student, sheet);
         }
 
+        File file = path.toFile();
+        file.getParentFile().mkdirs();
+        file.createNewFile();
         try (FileOutputStream fileOut = new FileOutputStream(path.toFile())) {
             // write this workbook to an output stream
             workbook.write(fileOut);
@@ -54,6 +58,9 @@ public class XlsxWriter implements FileWriter{
             addPresentation(presentation, sheet);
         }
 
+        File file = path.toFile();
+        file.getParentFile().mkdirs();
+        file.createNewFile();
         try (FileOutputStream fileOut = new FileOutputStream(path.toFile())) {
             // write this workbook to an output stream
             workbook.write(fileOut);
@@ -61,23 +68,36 @@ public class XlsxWriter implements FileWriter{
         }
     }
 
-    public void writeRoomTimetable(Path path, List<PlannedPresentation> presentations) throws IOException{
-        // open file writer
+    public void writeRoomTimetable(Path path, List<OfferedPresentation> presentations) throws IOException{
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.getSheetAt(0);
 
         // write title
+        Row titleRow = sheet.createRow(0);
+        Cell titleCell = titleRow.createCell(0, CellType.STRING);
+        titleCell.setCellValue("Raumplan");
 
-        for(PlannedPresentation presentation : presentations)
+        // empty row
+        sheet.createRow(1);
+
+        for(OfferedPresentation presentation : presentations)
         {
-            presentation.getRoom();
+            addRooms(presentation, sheet);
         }
 
-
-        // close file writer
+        File file = path.toFile();
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+        try (FileOutputStream fileOut = new FileOutputStream(path.toFile())) {
+            // write this workbook to an output stream
+            workbook.write(fileOut);
+            fileOut.flush();
+        }
     }
 
     protected void addStudent(Student student, Sheet sheet) throws IOException
     {
-        int studentRowNum = sheet.getLastRowNum() + 1;
+        int studentRowNum = sheet.getLastRowNum() + 2;
         Row studentClassRow = sheet.createRow(studentRowNum);
         studentClassRow.createCell(0).setCellValue(student.getSchoolClass());
 
@@ -120,4 +140,20 @@ public class XlsxWriter implements FileWriter{
         }
     }
 
+    protected void addRooms(OfferedPresentation presentation, Sheet sheet) throws IOException
+    {
+
+        int roomsRowNum = sheet.getLastRowNum() + 1;;
+        Row roomDataRow = sheet.createRow(roomsRowNum);
+        roomDataRow.createCell(0).setCellValue(presentation.getCompanyName());
+        roomDataRow.createCell(1).setCellValue(presentation.getTitle());
+
+        for(PlannedPresentation plannedPresentation : presentation.getPlannedPresentations())
+        {
+            // subtract char value of 'A' (first time slot) from timeslot to get index starting from 0
+            // add 2 to skip to indexes after name/title info
+            int index = plannedPresentation.getTimeslot() - 65 + 2;
+            roomDataRow.createCell(index).setCellValue(plannedPresentation.getRoom().getRoomNumber());
+        }
+    }
 }
