@@ -62,25 +62,26 @@ public class RoomManagementUnit {
     }
 
     /**
-     * Calculates the completion score of all students adn prints the percentage in the console and returns the value.
+     * Calculates the completion score of all students, prints the percentage in the console and returns the value.
      *
      * @param boomData the data holding the presentations, the student wishes and the available rooms.
-     * @return int as the percentage of all scores
+     * @return double as the percentage of all scores
      */
-    protected int calculateCompletionScore(BoomData boomData) {
+    protected double calculateCompletionScore(BoomData boomData) {
         List<Student> studentList = boomData.getStudents();
-        int studentScore = 0;
         int totalScore = 0;
+
         for (Student student : studentList) {
+            int studentScore = 0;
             for (int i = 0; i <= 5; i++) {
                 if (isWishGranted(student, i)) {
                     studentScore += (6 - i);
                 }
             }
             totalScore += studentScore;
-            studentScore = 0;
         }
-        int scorePercentage = totalScore / studentList.size() * 5;
+
+        double scorePercentage = totalScore * 5.0 / studentList.size();
         System.out.println("Total score:" + scorePercentage + "%");
         return scorePercentage;
     }

@@ -53,45 +53,58 @@ public class RoomManagementUnitTest {
 
     @Test
     public void calculateCompletionScoreTest() {
-        //offeredPresentations
-        List<OfferedPresentation> offeredPresentationList = new ArrayList<>();
-        OfferedPresentation offeredPresentation1 = new OfferedPresentation(123, 0, 0, "", '0', "");
-        OfferedPresentation offeredPresentation2 = new OfferedPresentation(234, 0, 0, "", '0', "");
-        OfferedPresentation offeredPresentation3 = new OfferedPresentation(456, 0, 0, "", '0', "");
-        OfferedPresentation offeredPresentation4 = new OfferedPresentation(567, 0, 0, "", '0', "");
-        OfferedPresentation offeredPresentation5 = new OfferedPresentation(789, 0, 0, "", '0', "");
-        OfferedPresentation offeredPresentation6 = new OfferedPresentation(890, 0, 0, "", '0', "");
-        OfferedPresentation offeredPresentation7 = new OfferedPresentation(6969, 0, 0, "", '0', "");
-        offeredPresentationList.add(offeredPresentation1);
-        offeredPresentationList.add(offeredPresentation2);
-        offeredPresentationList.add(offeredPresentation3);
-        offeredPresentationList.add(offeredPresentation4);
-        offeredPresentationList.add(offeredPresentation5);
-        offeredPresentationList.add(offeredPresentation6);
-        //plannedPresentations
-        List<PlannedPresentation> plannedPresentationList = new ArrayList<>();
-        PlannedPresentation plannedPresentation1 = new PlannedPresentation('0', null, offeredPresentation1, null);
-        PlannedPresentation plannedPresentation2 = new PlannedPresentation('0', null, offeredPresentation2, null);
-        PlannedPresentation plannedPresentation3 = new PlannedPresentation('0', null, offeredPresentation7, null);
-        PlannedPresentation plannedPresentation4 = new PlannedPresentation('0', null, offeredPresentation4, null);
-        PlannedPresentation plannedPresentation5 = new PlannedPresentation('0', null, offeredPresentation5, null);
-        plannedPresentationList.add(plannedPresentation1);
-        plannedPresentationList.add(plannedPresentation2);
-        plannedPresentationList.add(plannedPresentation3);
-        plannedPresentationList.add(plannedPresentation4);
-        plannedPresentationList.add(plannedPresentation5);
-        //students
-        List<Student> studentList = new ArrayList<>();
-        //completionscore for student1: 6+5+3+2=16 * 5 = 80%
-        Student student1 = new Student(plannedPresentationList, offeredPresentationList, null, null, null, 0);
-        studentList.add(student1);
+        // Setup offered presentations
+        List<OfferedPresentation> offeredPresentationList = new ArrayList<>(Arrays.asList(
+                new OfferedPresentation(123, 0, 0, "", '0', ""),
+                new OfferedPresentation(234, 0, 0, "", '0', ""),
+                new OfferedPresentation(456, 0, 0, "", '0', ""),
+                new OfferedPresentation(567, 0, 0, "", '0', ""),
+                new OfferedPresentation(789, 0, 0, "", '0', ""),
+                new OfferedPresentation(890, 0, 0, "", '0', ""),
+                new OfferedPresentation(6969, 0, 0, "", '0', "")
+        ));
+
+        /*
+         * For this test we simulate:
+         * - Student1 with planned presentations that yield a score of 16
+         *   (e.g. granted wishes: indices 0, 1, 3, 4 → 6+5+3+2 = 16).
+         * - Student2 with planned presentations that yield a score of 17,
+         *   achieved by granting one extra wish (e.g. indices 0, 1, 3, 4, and 5 → 6+5+3+2+1 = 17).
+         */
+
+        // Planned presentations for student1 (score 16)
+        List<PlannedPresentation> plannedPresentationList1 = new ArrayList<>(Arrays.asList(
+                new PlannedPresentation('0', null, offeredPresentationList.get(0), null), // wish 0: 6 points
+                new PlannedPresentation('0', null, offeredPresentationList.get(1), null), // wish 1: 5 points
+                new PlannedPresentation('0', null, offeredPresentationList.get(6), null), // not granted (e.g. wish 2 missing)
+                new PlannedPresentation('0', null, offeredPresentationList.get(3), null), // wish 3: 3 points
+                new PlannedPresentation('0', null, offeredPresentationList.get(4), null)  // wish 4: 2 points
+        ));
+
+        // Planned presentations for student2 (score 17, by adding one more granted wish)
+        List<PlannedPresentation> plannedPresentationList2 = new ArrayList<>(Arrays.asList(
+                new PlannedPresentation('0', null, offeredPresentationList.get(0), null), // wish 0: 6 points
+                new PlannedPresentation('0', null, offeredPresentationList.get(1), null), // wish 1: 5 points
+                new PlannedPresentation('0', null, offeredPresentationList.get(6), null), // not granted (as above)
+                new PlannedPresentation('0', null, offeredPresentationList.get(3), null), // wish 3: 3 points
+                new PlannedPresentation('0', null, offeredPresentationList.get(4), null), // wish 4: 2 points
+                new PlannedPresentation('0', null, offeredPresentationList.get(5), null)  // wish 5: 1 point (extra)
+        ));
+
+        // Create two students with different scores
+        Student student1 = new Student(plannedPresentationList1, offeredPresentationList, null, null, null, 0);
+        Student student2 = new Student(plannedPresentationList2, offeredPresentationList, null, null, null, 0);
+        List<Student> studentList = Arrays.asList(student1, student2);
 
         BoomData boomData = new BoomData(null, null, studentList);
         RoomManagementUnit roomManagementUnit = new RoomManagementUnit();
 
-        int expectedValue = 80;
-        int actualValue = roomManagementUnit.calculateCompletionScore(boomData);
-        assertEquals(expectedValue, actualValue);
+        // Expected percentage: average score = (16 + 17)/2 = 16.5, then 16.5 * 5 = 82.5%
+        double expectedValue = 82.5;
+        double actualValue = roomManagementUnit.calculateCompletionScore(boomData);
+
+        // Compare double values using a small delta for precision
+        assertEquals(expectedValue, actualValue, 0.001);
     }
 
     @Test
