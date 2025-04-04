@@ -26,7 +26,7 @@ public class RoomInterpreter {
 
             try {
                 String name = row.get(0);
-                int capacity = Integer.parseInt(row.get(1));
+                int capacity = (int) Double.parseDouble(row.get(1));
 
                 rooms.add(new Room(name, capacity));
             } catch (IndexOutOfBoundsException e) {

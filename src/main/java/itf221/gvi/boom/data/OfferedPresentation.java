@@ -1,35 +1,34 @@
 package itf221.gvi.boom.data;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Holds data for a company's offered presentations. Acts as a presentation blueprint for itf221.gvi.boom.data.PlannedPresentations.
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Data
 public class OfferedPresentation {
+    @NonNull
     private int id;
+    @NonNull
     private int minCapacity;
+    @NonNull
     private int maxCapacity;
+    @NonNull
     private String specialty;
+    @NonNull
     private char earliestTime;
+    @NonNull
     private String companyName;
+
     private List<PlannedPresentation> plannedPresentations;
 
-    public OfferedPresentation(int id, int minCapacity, int maxCapacity, String specialty, char earliestTime,  String companyName)
-    {
-        this.id = id;
-        this.minCapacity = minCapacity;
-        this.maxCapacity = maxCapacity;
-        this.specialty = specialty;
-        this.earliestTime = earliestTime;
-        this.companyName = companyName;
-        this.plannedPresentations = new ArrayList<PlannedPresentation>();
-    }
+    /**
+     * Defines how many plannedPresentations should be instantiated.
+     */
+    private int amountOfPresentations;
 
     public String getTitle() {
         return String.format("%s: %s", this.getCompanyName(), this.getSpecialty());

@@ -22,12 +22,6 @@ public class ReaderTest {
         List<List<String>> testData = xlsxReader.readFile(testPath);
         List<List<String>> expectedData = new ArrayList<>();
 
-        List<String> temp1 = new ArrayList<>();
-        temp1.add("String");
-        temp1.add("Number");
-        temp1.add("More Numbers");
-        expectedData.add(temp1);
-
         List<String> temp2 = new ArrayList<>();
         temp2.add("test");
         temp2.add("123.0");
