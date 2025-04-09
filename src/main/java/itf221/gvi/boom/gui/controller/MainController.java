@@ -26,25 +26,10 @@ import java.util.Objects;
  */
 public class MainController {
     @FXML
-    Button sw_browse_button;
+    Button sw_browse_button, ul_browse_button, rp_browse_button, import_button;
 
     @FXML
-    Button ul_browse_button;
-
-    @FXML
-    Button rp_browse_button;
-
-    @FXML
-    Button import_button;
-
-    @FXML
-    TextArea sw_import_field;
-
-    @FXML
-    TextArea ul_import_field;
-
-    @FXML
-    TextArea rp_import_field;
+    TextArea sw_import_field, ul_import_field, rp_import_field;
 
     /**
      * Initializes the 'start' process by switching to the loading view and executing the distribution algorithm.
@@ -89,15 +74,15 @@ public class MainController {
     private void switchToLoadingView(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/itf221/gvi/boom/fxml/loading-view.fxml"));
         Parent root = fxmlLoader.load();
+        LoadingController loadingController = fxmlLoader.getController();
+        loadingController.setPaths(
+                Paths.get(sw_import_field.getText()),
+                Paths.get(ul_import_field.getText()),
+                Paths.get(rp_import_field.getText()),
+                getDownloadFolderPath()
+        );
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-        double stageWidth = stage.getWidth();
-        double stageHeight = stage.getHeight();
-
-        stage.setWidth(stageWidth);
-        stage.setHeight(stageHeight);
-
-        stage.setScene(new Scene(root, stageWidth, stageHeight));
+        stage.setScene(new Scene(root, stage.getWidth(), stage.getHeight()));
         stage.show();
     }
 
