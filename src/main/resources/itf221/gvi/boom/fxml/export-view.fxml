@@ -10,7 +10,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="itf221.gvi.boom.gui.controller.ExportController">
     <children>
-        <Label alignment="CENTER" layoutX="266.0" layoutY="43.0" prefHeight="35.0" prefWidth="178.0" text="Import Data" textAlignment="CENTER">
+        <Label alignment="CENTER" layoutX="266.0" layoutY="43.0" prefHeight="35.0" prefWidth="178.0" text="Export Data" textAlignment="CENTER">
             <font>
                 <Font name="System Bold" size="24.0" />
             </font>
