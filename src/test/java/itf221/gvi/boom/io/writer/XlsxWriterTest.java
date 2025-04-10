@@ -44,7 +44,7 @@ public class XlsxWriterTest {
 
         PlannedPresentation tmpPlannedPresentation1 = new PlannedPresentation('A', tmpRoom1, tmpCompany1.getOfferedPresentations().getFirst(), new ArrayList<>());
         tmpCompany1.getOfferedPresentations().getFirst().getPlannedPresentations().add(tmpPlannedPresentation1);
-        PlannedPresentation tmpPlannedPresentation2 = new PlannedPresentation('B', tmpRoom2, tmpCompany1.getOfferedPresentations().getFirst(), new ArrayList<>());
+        PlannedPresentation tmpPlannedPresentation2 = new PlannedPresentation('B', tmpRoom2, tmpCompany2.getOfferedPresentations().getFirst(), new ArrayList<>());
         tmpCompany2.getOfferedPresentations().getFirst().getPlannedPresentations().add(tmpPlannedPresentation2);
 
         Student tmpStudent1 = new Student(allOffered, "surname1", "name1", "Class1", 1);
@@ -60,6 +60,13 @@ public class XlsxWriterTest {
 
         List<Student> studentData = Arrays.asList(tmpStudent1, tmpStudent2, tmpStudent3, tmpStudent4);
 
+        for(Student s:studentData)
+        {
+            for(PlannedPresentation p : s.getPlannedPresentations())
+            {
+                p.getAttendees().add(s);
+            }
+        }
 
 
         return new BoomData(roomData, companyData, studentData);
@@ -83,10 +90,21 @@ public class XlsxWriterTest {
     @Test
     void writePresentationAttendanceTest(){
         BoomData data = createDummyData();
+        List<PlannedPresentation> plannedPresentations = new ArrayList<>();
+        List<OfferedPresentation> offeredPresentations = new ArrayList<>();
+        for(Company company : data.getCompanies())
+        {
+            offeredPresentations.addAll(company.getOfferedPresentations());
+        }
+        for(OfferedPresentation presentation : offeredPresentations)
+        {
+            plannedPresentations.addAll(presentation.getPlannedPresentations());
+        }
+
         XlsxWriter testWriter = new XlsxWriter();
-        Path outputFile = Path.of("src/test/results/Student_out.xlsx");
+        Path outputFile = Path.of("src/test/results/Attendance_out.xlsx");
         try {
-            testWriter.writeStudentPlan(outputFile, data.getStudents());
+            testWriter.writePresentationAttendance(outputFile, plannedPresentations);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -101,7 +119,7 @@ public class XlsxWriterTest {
             offeredPresentations.addAll(company.getOfferedPresentations());
         }
         XlsxWriter testWriter = new XlsxWriter();
-        Path outputFile = Path.of("src/test/results/Student_out.xlsx");
+        Path outputFile = Path.of("src/test/results/Timetable_out.xlsx");
         try {
             testWriter.writeRoomTimetable(outputFile, offeredPresentations);
         } catch (IOException e) {
