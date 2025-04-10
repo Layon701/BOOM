@@ -31,6 +31,8 @@ public class MainController {
     @FXML
     TextArea sw_import_field, ul_import_field, rp_import_field;
 
+    static int completionScore;
+
     /**
      * Initializes the 'start' process by switching to the loading view and executing the distribution algorithm.
      * @param event The ActionEvent triggered by the user action.
@@ -54,7 +56,7 @@ public class MainController {
                 getDownloadFolderPath());
         BoomData boomData = ioManager.readFiles();
         RoomManagementUnit roomManagementUnit = new RoomManagementUnit();
-        roomManagementUnit.execute(boomData);
+        completionScore = roomManagementUnit.execute(boomData);
     }
 
     /**
@@ -74,13 +76,6 @@ public class MainController {
     private void switchToLoadingView(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/itf221/gvi/boom/fxml/loading-view.fxml"));
         Parent root = fxmlLoader.load();
-        LoadingController loadingController = fxmlLoader.getController();
-        loadingController.setPaths(
-                Paths.get(sw_import_field.getText()),
-                Paths.get(ul_import_field.getText()),
-                Paths.get(rp_import_field.getText()),
-                getDownloadFolderPath()
-        );
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root, stage.getWidth(), stage.getHeight()));
         stage.show();
