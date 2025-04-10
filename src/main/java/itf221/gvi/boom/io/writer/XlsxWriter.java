@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+import static java.lang.String.valueOf;
+
 public class XlsxWriter implements FileWriter{
 
     public void writeStudentPlan(Path path, List<Student> students) throws IOException{
@@ -49,7 +51,7 @@ public class XlsxWriter implements FileWriter{
     public void writePresentationAttendance(Path path, List<PlannedPresentation> presentations) throws IOException{
 
         Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.getSheetAt(0);
+        Sheet sheet = workbook.createSheet();
 
         // write title
 
@@ -70,7 +72,7 @@ public class XlsxWriter implements FileWriter{
 
     public void writeRoomTimetable(Path path, List<OfferedPresentation> presentations) throws IOException{
         Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.getSheetAt(0);
+        Sheet sheet = workbook.createSheet();
 
         // write title
         Row titleRow = sheet.createRow(0);
@@ -114,7 +116,7 @@ public class XlsxWriter implements FileWriter{
         for(int i = 0; i < student.getPlannedPresentations().size(); i++)
         {
             PlannedPresentation presentation = student.getPlannedPresentations().get(i);
-            timeslotRow.createCell(i).setCellValue(presentation.getTimeslot());
+            timeslotRow.createCell(i).setCellValue(valueOf(presentation.getTimeslot()));
             presentationRow.createCell(i).setCellValue(presentation.getOfferedPresentation().getTitle());
         }
     }
