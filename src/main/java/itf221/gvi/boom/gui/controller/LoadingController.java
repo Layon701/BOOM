@@ -45,7 +45,6 @@ public class LoadingController {
         this.ulPath = ulPath;
         this.rpPath = rpPath;
         this.downloadPath = downloadPath;
-        runDistributionTask();
     }
 
     /**
@@ -57,38 +56,6 @@ public class LoadingController {
     private void initLoading(ActionEvent event) throws IOException {
         // TODO: No real logic for now, just a button to see the next view
         switchToExportView(event);
-    }
-
-    /**
-     * Runs the distribution algorithm in a background thread and updates the progress indicator.
-     */
-    private void runDistributionTask() {
-        // Background thread in JavaFX that allows running long-running operations without freezing the UI
-        Task<Void> task = new Task<>() {
-            @Override
-            protected Void call() throws Exception {
-                updateProgress(0, 100);
-
-                IOManager ioManager = new IOManager(swPath, ulPath, rpPath, downloadPath);
-                updateProgress(10, 100);
-
-                BoomData boomData = ioManager.readFiles();
-                updateProgress(50, 100);
-
-                RoomManagementUnit roomManagementUnit = new RoomManagementUnit();
-                roomManagementUnit.execute(boomData);
-                updateProgress(100, 100);
-
-                return null;
-            }
-        };
-        // Bind the progress indicator to the task's progress
-        progressIndicator.progressProperty().bind(task.progressProperty());
-        task.setOnSucceeded(e -> {
-            // TODO: Switch to the export view after the task completes with switchToExportView(...);
-        });
-        // Start the task in a new thread
-        new Thread(task).start();
     }
 
     /**
