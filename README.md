@@ -9,4 +9,4 @@ Ziel der Software:
 - Export druckfertiger Dokumente wie Anwesenheitslisten und Schülerlaufzettel.
 - Berechnung eines Erfüllungsscores, der zeigt, wie gut die Schülerwünsche insgesamt erfüllt wurden.
 
-[Hier klicken für die Anwenderdokumentation](https://github.com/user-attachments/files/19702950/Benutzerdoku.pdf)
+[> Download Anwenderdokumentation <](https://github.com/user-attachments/files/19702950/Benutzerdoku.pdf)
