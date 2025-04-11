@@ -1,16 +1,19 @@
 package itf221.gvi.boom.io.writer;
 
 import itf221.gvi.boom.data.*;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.extractor.XSSFExcelExtractor;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
 
 import java.awt.geom.PathIterator;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import java.nio.file.Path;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class XlsxWriterTest {
 
@@ -85,6 +88,77 @@ public class XlsxWriterTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        try{
+            XSSFWorkbook expectedWorkbook = new XSSFWorkbook();
+            Sheet expectedSheet = expectedWorkbook.createSheet();
+
+            // write title
+            Row titleRow = expectedSheet.createRow(0);
+            Cell titleCell = titleRow.createCell(0, CellType.STRING);
+            titleCell.setCellValue("Schüler");
+
+            // empty row
+            expectedSheet.createRow(1);
+
+            Row row = expectedSheet.createRow(3);
+            row.createCell(1).setCellValue("Class1");
+            row = expectedSheet.createRow(4);
+            row.createCell(1).setCellValue("1");
+            row.createCell(2).setCellValue("name1");
+            row.createCell(3).setCellValue("surname1");
+            row = expectedSheet.createRow(5);
+            row.createCell(1).setCellValue("A");
+            row = expectedSheet.createRow(6);
+            row.createCell(1).setCellValue("Company1: specialty1");
+
+            row = expectedSheet.createRow(8);
+            row.createCell(1).setCellValue("Class2");
+            row = expectedSheet.createRow(9);
+            row.createCell(1).setCellValue("2");
+            row.createCell(2).setCellValue("name2");
+            row.createCell(3).setCellValue("surname2");
+            row = expectedSheet.createRow(10);
+            row.createCell(1).setCellValue("A");
+            row.createCell(2).setCellValue("B");
+            row = expectedSheet.createRow(11);
+            row.createCell(1).setCellValue("Company1: specialty1");
+            row.createCell(2).setCellValue("Company2: specialty2");
+
+            row = expectedSheet.createRow(13);
+            row.createCell(1).setCellValue("Class3");
+            row = expectedSheet.createRow(14);
+            row.createCell(1).setCellValue("3");
+            row.createCell(2).setCellValue("name3");
+            row.createCell(3).setCellValue("surname3");
+            row = expectedSheet.createRow(15);
+            row.createCell(1).setCellValue("A");
+            row.createCell(2).setCellValue("B");
+            row = expectedSheet.createRow(16);
+            row.createCell(1).setCellValue("Company1: specialty1");
+            row.createCell(2).setCellValue("Company2: specialty2");
+
+            row = expectedSheet.createRow(18);
+            row.createCell(1).setCellValue("Class4");
+            row = expectedSheet.createRow(19);
+            row.createCell(1).setCellValue("4");
+            row.createCell(2).setCellValue("name4");
+            row.createCell(3).setCellValue("surname4");
+            row = expectedSheet.createRow(20);
+            row.createCell(1).setCellValue("B");
+            row = expectedSheet.createRow(21);
+            row.createCell(1).setCellValue("Company2: specialty2");
+
+
+            FileInputStream file = new FileInputStream(outputFile.toFile());
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
+
+            String workbookText = new XSSFExcelExtractor(workbook).getText();
+            String expectedWorkbookText = new XSSFExcelExtractor(expectedWorkbook).getText();
+            assertEquals(workbookText,expectedWorkbookText);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -108,6 +182,60 @@ public class XlsxWriterTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        try{
+            XSSFWorkbook expectedWorkbook = new XSSFWorkbook();
+            Sheet expectedSheet = expectedWorkbook.createSheet();
+
+
+            Row row = expectedSheet.createRow(0);
+            row.createCell(1).setCellValue("Company1");
+            row.createCell(2).setCellValue("ID: 1");
+            row.createCell(3).setCellValue("Company1: specialty1");
+            row.createCell(4).setCellValue("specialty1");
+            row = expectedSheet.createRow(2);
+            row.createCell(1).setCellValue("1");
+            row.createCell(2).setCellValue("name1");
+            row.createCell(3).setCellValue("surname1");
+            row = expectedSheet.createRow(3);
+            row.createCell(1).setCellValue("2");
+            row.createCell(2).setCellValue("name2");
+            row.createCell(3).setCellValue("surname2");
+            row = expectedSheet.createRow(4);
+            row.createCell(1).setCellValue("3");
+            row.createCell(2).setCellValue("name3");
+            row.createCell(3).setCellValue("surname3");
+
+
+            row = expectedSheet.createRow(5);
+            row.createCell(1).setCellValue("Company2");
+            row.createCell(2).setCellValue("ID: 2");
+            row.createCell(3).setCellValue("Company2: specialty2");
+            row.createCell(4).setCellValue("specialty2");
+            row = expectedSheet.createRow(7);
+            row.createCell(1).setCellValue("2");
+            row.createCell(2).setCellValue("name2");
+            row.createCell(3).setCellValue("surname2");
+            row = expectedSheet.createRow(8);
+            row.createCell(1).setCellValue("3");
+            row.createCell(2).setCellValue("name3");
+            row.createCell(3).setCellValue("surname3");
+            row = expectedSheet.createRow(9);
+            row.createCell(1).setCellValue("4");
+            row.createCell(2).setCellValue("name4");
+            row.createCell(3).setCellValue("surname4");
+
+
+            FileInputStream file = new FileInputStream(outputFile.toFile());
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
+
+            String workbookText = new XSSFExcelExtractor(workbook).getText();
+            String expectedWorkbookText = new XSSFExcelExtractor(expectedWorkbook).getText();
+            assertEquals(workbookText,expectedWorkbookText);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Test
@@ -122,6 +250,46 @@ public class XlsxWriterTest {
         Path outputFile = Path.of("src/test/results/Timetable_out.xlsx");
         try {
             testWriter.writeRoomTimetable(outputFile, offeredPresentations);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try{
+            XSSFWorkbook expectedWorkbook = new XSSFWorkbook();
+            Sheet expectedSheet = expectedWorkbook.createSheet();
+
+            // write title
+            Row titleRow = expectedSheet.createRow(0);
+            Cell titleCell = titleRow.createCell(0, CellType.STRING);
+            titleCell.setCellValue("Raumplan");
+
+            // empty row
+            expectedSheet.createRow(1);
+
+            Row row = expectedSheet.createRow(2);
+            row.createCell(1).setCellValue("Company1");
+            row.createCell(2).setCellValue("Company1: specialty1");
+            row.createCell(3).setCellValue("1");
+            row = expectedSheet.createRow(3);
+            row.createCell(1).setCellValue("Company2");
+            row.createCell(2).setCellValue("Company2: specialty2");
+            row.createCell(4).setCellValue("20");
+            row = expectedSheet.createRow(4);
+            row.createCell(1).setCellValue("Company3");
+            row.createCell(2).setCellValue("Company3: specialty3");
+            row = expectedSheet.createRow(5);
+            row.createCell(1).setCellValue("Company4");
+            row.createCell(2).setCellValue("Company4: specialty4");
+            row = expectedSheet.createRow(6);
+            row.createCell(1).setCellValue("Company5");
+            row.createCell(2).setCellValue("Company5: specialty5");
+
+            FileInputStream file = new FileInputStream(outputFile.toFile());
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
+
+            String workbookText = new XSSFExcelExtractor(workbook).getText();
+            String expectedWorkbookText = new XSSFExcelExtractor(expectedWorkbook).getText();
+            assertEquals(workbookText,expectedWorkbookText);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
