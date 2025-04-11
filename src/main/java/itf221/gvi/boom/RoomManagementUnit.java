@@ -20,7 +20,7 @@ public class RoomManagementUnit {
      *
      * @param boomData the data holding the presentations, the student wishes and the available rooms.
      */
-    public double execute(BoomData boomData) {
+    public int execute(BoomData boomData) {
         setRequiredPresentationAmount(boomData);
         instantiatePlannedPresentations(boomData.getCompanies());
 
@@ -233,7 +233,7 @@ public class RoomManagementUnit {
      * @param boomData the data holding the presentations, the student wishes and the available rooms.
      * @return double as the percentage of all scores
      */
-    protected double calculateCompletionScore(BoomData boomData) {
+    protected int calculateCompletionScore(BoomData boomData) {
         List<Student> studentList = boomData.getStudents();
         int totalScore = 0;
 
@@ -247,7 +247,7 @@ public class RoomManagementUnit {
             totalScore += studentScore;
         }
 
-        double scorePercentage = totalScore * 5.0 / studentList.size();
+        int scorePercentage = (int) (totalScore * 5.0 / studentList.size());
         System.out.println("Total score:" + scorePercentage + "%");
         return scorePercentage;
     }
