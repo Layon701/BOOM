@@ -29,7 +29,6 @@ public class RoomManagementUnit {
         distributeUnfulfilledStudents(boomData);
 
         setTimeslotAndRoom(boomData);
-        System.out.println(boomData);
         return calculateCompletionScore(boomData);
     }
 

@@ -1,5 +1,6 @@
 package itf221.gvi.boom.data;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * Holds data for scheduled presentations.
  */
+@AllArgsConstructor
 @RequiredArgsConstructor
 @Data
 public class PlannedPresentation {
