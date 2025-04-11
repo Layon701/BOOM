@@ -19,13 +19,12 @@ public class Controller {
         Path outputFolderPath = Path.of("src/test/resources/");
 
         // on GUI run button
-        List<PlannedPresentation> plannedPresentations =
-                runDistributionAlg(studentsFilePath, companyFilePath, roomFilePath, outputFolderPath);
+        double score = runDistributionAlg(studentsFilePath, companyFilePath, roomFilePath, outputFolderPath);
 
         // write output
     }
 
-    public static List<PlannedPresentation> runDistributionAlg(Path studentsFilePath, Path companyFilePath, Path roomFilePath, Path outputFolderPath) {
+    public static double runDistributionAlg(Path studentsFilePath, Path companyFilePath, Path roomFilePath, Path outputFolderPath) {
         // retrieve data
         IOManager ioManager = new IOManager(studentsFilePath, companyFilePath, roomFilePath, outputFolderPath);
         BoomData boomData = ioManager.readFiles();

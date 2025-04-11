@@ -52,7 +52,7 @@ public class XlsxReader implements Reader {
                         cellList.add(cell.getStringCellValue());
                         break;
                     case NUMERIC:
-                        cellList.add(String.valueOf(cell.getNumericCellValue()));
+                        cellList.add(String.valueOf((int)cell.getNumericCellValue()));
                         break;
                     default:
                         cellList.add("");

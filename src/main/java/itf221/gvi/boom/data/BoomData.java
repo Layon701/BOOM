@@ -16,4 +16,13 @@ public class BoomData {
     private List<Room> rooms;
     private List<Company> companies;
     private List<Student> students;
+
+    @Override
+    public String toString() {
+        return "BoomData{" +
+                "rooms=" + rooms +
+                ", companies=" + companies +
+                ", students=" + students +
+                '}';
+    }
 }
