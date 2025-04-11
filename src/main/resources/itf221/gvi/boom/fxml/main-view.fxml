@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="itf221.gvi.boom.gui.controller.MainController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="itf221.gvi.boom.gui.controller.MainController">
    <children>
       <Label alignment="CENTER" layoutX="246.0" layoutY="52.0" prefHeight="35.0" prefWidth="219.0" text="Dateien auswählen" textAlignment="CENTER" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="50.0">
          <font>
@@ -64,5 +64,18 @@
           </Menu>
         </menus>
       </MenuBar>
+      <AnchorPane fx:id="toastPane" layoutX="471.0" layoutY="14.0" prefHeight="40.0" prefWidth="263.0" style="-fx-background-color: #ff0000; -fx-background-radius: 10;" visible="false" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+         <children>
+            <Button layoutX="209.0" layoutY="4.0" minWidth="41.0" onAction="#closeToast" prefHeight="32.0" prefWidth="41.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px;" text="x">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Label fx:id="algorithmFailedToast" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="204.0" textFill="white">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

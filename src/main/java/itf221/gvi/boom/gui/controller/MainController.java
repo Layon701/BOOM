@@ -3,6 +3,8 @@ package itf221.gvi.boom.gui.controller;
 import itf221.gvi.boom.RoomManagementUnit;
 import itf221.gvi.boom.data.BoomData;
 import itf221.gvi.boom.io.IOManager;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +12,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -31,7 +35,26 @@ public class MainController {
     @FXML
     TextArea sw_import_field, ul_import_field, rp_import_field;
 
-    static int completionScore;
+    @FXML
+    AnchorPane rootPane;
+
+    @FXML
+    AnchorPane toastPane;
+
+    @FXML
+    private Label algorithmFailedToast;
+
+    static boolean shouldFailedToastBeShown = false;
+
+    /**
+     * On initializing checks, if the failedToast should be shown.
+     */
+    @FXML
+    private void initialize() {
+        if (shouldFailedToastBeShown){
+            showFailedToast();
+        }
+    }
 
     /**
      * Initializes the 'start' process by switching to the loading view and executing the distribution algorithm.
@@ -41,22 +64,22 @@ public class MainController {
     @FXML
     private void initStart(ActionEvent event) throws IOException {
         switchToLoadingView(event);
-        runDistributionAlg();
     }
 
     /**
-     * Executes the distribution algorithm.
+     * Shows the success toast message.
+     */
+    private void showFailedToast() {
+        algorithmFailedToast.setText("Fehlerhafte/Falsche Excel-Datei");
+        toastPane.setVisible(true);
+    }
+
+    /**
+     * Closes the toast when the user clicks the "x" button.
      */
     @FXML
-    private void runDistributionAlg() {
-        IOManager ioManager = new IOManager(
-                Paths.get(sw_import_field.getText()),
-                Paths.get(ul_import_field.getText()),
-                Paths.get(rp_import_field.getText()),
-                getDownloadFolderPath());
-        BoomData boomData = ioManager.readFiles();
-        RoomManagementUnit roomManagementUnit = new RoomManagementUnit();
-        completionScore = roomManagementUnit.execute(boomData);
+    public void closeToast() {
+        toastPane.setVisible(false);
     }
 
     /**
@@ -74,8 +97,17 @@ public class MainController {
      * @throws IOException If there is an error while loading the FXML file.
      */
     private void switchToLoadingView(ActionEvent event) throws IOException {
+        Path swImportPath = Paths.get(sw_import_field.getText());
+        Path ulImportPath = Paths.get(ul_import_field.getText());
+        Path rpImportPath = Paths.get(rp_import_field.getText());
+        Path downloadFolderPath = getDownloadFolderPath();
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/itf221/gvi/boom/fxml/loading-view.fxml"));
         Parent root = fxmlLoader.load();
+
+        LoadingController controller = fxmlLoader.getController();
+        controller.setPaths(swImportPath, ulImportPath, rpImportPath, downloadFolderPath);
+
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root, stage.getWidth(), stage.getHeight()));
         stage.show();
@@ -97,6 +129,7 @@ public class MainController {
             System.out.println("File not found!");
         }
     }
+
 
     /**
      * Opens a file chooser to select an Excel file.
