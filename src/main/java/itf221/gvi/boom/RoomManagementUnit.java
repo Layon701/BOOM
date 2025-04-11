@@ -79,7 +79,7 @@ public class RoomManagementUnit {
      */
     protected void distributeUnfulfilledStudents(BoomData boomData) {
         // get all planned presentations from companies
-        List<PlannedPresentation> allPlannedPresentations = getAllPlannedPresentations(boomData);
+        List<PlannedPresentation> allPlannedPresentations = boomData.getAllPlannedPresentations();
 
         // get planned presentations that are close to be held
         List<PlannedPresentation> almostRealizablePresentations = new ArrayList<>(allPlannedPresentations.stream()
@@ -145,19 +145,6 @@ public class RoomManagementUnit {
                 }
             }
         }
-    }
-
-    /**
-     * Collects all planned presentations from the companies.
-     */
-    private List<PlannedPresentation> getAllPlannedPresentations(BoomData boomData) {
-        List<PlannedPresentation> presentations = new ArrayList<>();
-        for (Company company : boomData.getCompanies()) {
-            for (OfferedPresentation offered : company.getOfferedPresentations()) {
-                presentations.addAll(offered.getPlannedPresentations());
-            }
-        }
-        return presentations;
     }
 
     /**

@@ -4,6 +4,7 @@ package itf221.gvi.boom.data;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,5 +25,28 @@ public class BoomData {
                 ", companies=" + companies +
                 ", students=" + students +
                 '}';
+    }
+
+
+    /**
+     * Collects all planned presentations from the companies.
+     */
+    public List<PlannedPresentation> getAllPlannedPresentations() {
+        List<PlannedPresentation> presentations = new ArrayList<>();
+        for (OfferedPresentation offered : getAllOfferedPresentations()) {
+            presentations.addAll(offered.getPlannedPresentations());
+        }
+        return presentations;
+    }
+
+    /**
+     * Collects all offered presentations from the companies.
+     */
+    public List<OfferedPresentation> getAllOfferedPresentations() {
+        List<OfferedPresentation> offeredPresentations = new ArrayList<>();
+        for (Company company : getCompanies()) {
+            offeredPresentations.addAll(company.getOfferedPresentations());
+        }
+        return offeredPresentations;
     }
 }
