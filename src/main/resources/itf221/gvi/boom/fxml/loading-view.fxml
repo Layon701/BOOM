@@ -6,7 +6,7 @@
 
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="itf221.gvi.boom.gui.controller.LoadingController">
    <children>
-      <Label layoutX="269.0" layoutY="221.0" text="Bitte warten ..." AnchorPane.topAnchor="221.0">
+      <Label layoutX="269.0" layoutY="221.0" text="Bitte warten ..." AnchorPane.leftAnchor="330.0" AnchorPane.topAnchor="260.0">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
