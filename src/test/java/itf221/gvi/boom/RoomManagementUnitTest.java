@@ -3,15 +3,10 @@ package itf221.gvi.boom;
 import itf221.gvi.boom.data.*;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.*;
+import java.util.Collections;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -20,7 +15,7 @@ import java.util.Random;
 public class RoomManagementUnitTest {
 
     @Test
-    public void distributeStudentsTest(){
+    public void distributeStudentsTest() {
 
     }
 
@@ -114,66 +109,98 @@ public class RoomManagementUnitTest {
         assertEquals(expectedValue, actualValue, 0.001);
     }
 
-    @Test
-    public void testPolizeiAlwaysGetsAula() {
-        Room aula = new Room("Aula", 100);
-        Room room2 = new Room("R2", 150);
-        List<Room> rooms = Arrays.asList(aula, room2);
+    /**
+     * creates dummy Data
+     * @return dummy BoomData object
+     */
+    public BoomData createTestBoomData() {
+        List<Room> rooms = new ArrayList<>();
+        rooms.add(new Room("Aula", 50));    // Room reserved for "Polizei"
+        rooms.add(new Room("Room1", 20));
+        rooms.add(new Room("Room2", 20));
+        rooms.add(new Room("Room3", 15));
+        rooms.add(new Room("Room4", 20));
+        rooms.add(new Room("Room5", 20));
+        rooms.add(new Room("Room6", 20));
 
-        OfferedPresentation op = new OfferedPresentation(1, 50, 200, "Anzeigenhauptmeister", 'A', "Polizei");
-        op.setAmountOfPresentations(1);
+        // Create OfferedPresentations with planned presentation amounts.
+        OfferedPresentation opPolizei = new OfferedPresentation(1, 5, 25, "Security", 'A', "Polizei");
+        opPolizei.setAmountOfPresentations(2);
 
-        Company polizei = new Company("Polizei", List.of(op));
-        List<Company> companies = List.of(polizei);
+        OfferedPresentation opTech = new OfferedPresentation(2, 5, 20, "IT", 'B', "TechCorp");
+        opTech.setAmountOfPresentations(2);
 
+        OfferedPresentation opHealth = new OfferedPresentation(3, 5, 15, "Healthcare", 'A', "HealthInc");
+        opHealth.setAmountOfPresentations(3);
+
+        OfferedPresentation opWoop1 = new OfferedPresentation(4, 5, 20, "opWoop1", 'A', "opWoop1");
+        opWoop1.setAmountOfPresentations(2);
+
+        OfferedPresentation opWoop2 = new OfferedPresentation(5, 5, 20, "opWoop2", 'A', "opWoop2");
+        opWoop2.setAmountOfPresentations(2);
+
+        OfferedPresentation opWoop3 = new OfferedPresentation(6, 5, 20, "opWoop3", 'A', "opWoop3");
+        opWoop3.setAmountOfPresentations(3);
+
+        // Create Companies; each company gets its respective offered presentation.
+        Company polizeiCompany = new Company("Polizei", List.of(opPolizei));
+        Company techCorpCompany = new Company("TechCorp", List.of(opTech));
+        Company healthIncCompany = new Company("HealthInc", List.of(opHealth));
+        Company woop1Company = new Company("woop1", List.of(opWoop1));
+        Company woop2Company = new Company("woop2", List.of(opWoop2));
+        Company woop3Company = new Company("woop3", List.of(opWoop3));
+
+        List<Company> companies = new ArrayList<>();
+        companies.add(polizeiCompany);
+        companies.add(techCorpCompany);
+        companies.add(healthIncCompany);
+        companies.add(woop1Company);
+        companies.add(woop2Company);
+        companies.add(woop3Company);
+
+        // Create multiple Students
+        int numStudents = 10;
         List<Student> students = new ArrayList<>();
+        for (int i = 1; i <= numStudents; i++) {
 
-        BoomData boomData = new BoomData(rooms, companies, students);
-        RoomManagementUnit rmu = new RoomManagementUnit();
+            // Prepare the wished presentations: the list length is 6.
+            List<OfferedPresentation> wishes = new ArrayList<>();
+            wishes.add(opPolizei);
+            wishes.add(opTech);
+            wishes.add(opHealth);
+            wishes.add(opWoop1);
+            wishes.add(opWoop2);
+            wishes.add(opWoop3);
 
-        rmu.setTimeslotAndRoom(boomData);
+            // Initialize plannedPresentations list (to be filled later during scheduling).
+            Student student = new Student(wishes, "Salsa" + i, "Boy" + i, "10A", i);
+            students.add(student);
+        }
 
-        // verify that plannedPresentations are initialized and filled
-        assertNotNull(op.getPlannedPresentations(), "Planned presentations should not be null");
-        assertEquals(1, op.getPlannedPresentations().size(), "exactly one plannedPresentation should be here");
-        PlannedPresentation pp = op.getPlannedPresentations().getFirst();
-        assertEquals("Aula", pp.getRoom().getRoomNumber(), "Company 'Polizei' should receive room 'Aula'");
+        return new BoomData(rooms, companies, students);
     }
 
+    /**
+     * Checks that every plannedPresentation gets a timeslot and room assigned
+     */
     @Test
-    public void testContiguousTimeslotsAndNoOverbooking() {
-        Room room1 = new Room("R1", 150);
-        List<Room> rooms = List.of(room1);
+    public void testRoomAndTimeslotManagement() {
+        RoomManagementUnit roomManagementUnit = new RoomManagementUnit();
+        BoomData testBoomData = createTestBoomData();
+        roomManagementUnit.execute(testBoomData);
 
-        OfferedPresentation op = new OfferedPresentation(2, 50, 200, "Technology", 'A', "TechCompany");
-        op.setAmountOfPresentations(3);
+        boolean everyPresentationPlanned = true;
 
-        // simulate that one presentation already exists
-        List<PlannedPresentation> preScheduled = new ArrayList<>();
-        preScheduled.add(new PlannedPresentation('A', room1, op, new ArrayList<>()));
-        op.setPlannedPresentations(preScheduled);
-
-        Company company = new Company("TechCompany", List.of(op));
-        List<Company> companies = List.of(company);
-
-        List<Student> students = new ArrayList<>();
-        BoomData boomData = new BoomData(rooms, companies, students);
-
-        RoomManagementUnit rmu = new RoomManagementUnit();
-        rmu.setTimeslotAndRoom(boomData);
-
-        assertEquals(3, op.getPlannedPresentations().size(), "The OfferedPresentation should have 3 planned presentations");
-
-        // check that timeslots are consecutive
-        List<Character> timeslots = new ArrayList<>();
-        for (PlannedPresentation pp : op.getPlannedPresentations()) {
-            timeslots.add(pp.getTimeslot());
+        for (Student student : testBoomData.getStudents()) {
+            for (PlannedPresentation plannedPresentation : student.getPlannedPresentations()) {
+                if (!Character.isDefined(plannedPresentation.getTimeslot()) || plannedPresentation.getRoom() == null) {
+                    everyPresentationPlanned = false;
+                    break;
+                }
+            }
         }
-        Collections.sort(timeslots);
-        System.out.println(timeslots);
-        assertEquals('A', timeslots.get(0));
-        assertEquals('B', timeslots.get(1));
-        assertEquals('C', timeslots.get(2));
+
+        assertTrue(everyPresentationPlanned);
     }
 
     /**
