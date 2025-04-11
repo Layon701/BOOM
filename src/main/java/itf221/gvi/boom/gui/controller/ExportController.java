@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 
@@ -25,7 +25,7 @@ public class ExportController {
     @FXML
     public void initialize() {
         showSuccessToast();
-        completionScoreToast.setText("✔ Erfolg! Erfüllungsscore: " + MainController.completionScore + "%");
+        completionScoreToast.setText("✔ Erfolg! Erfüllungsscore: " + LoadingController.completionScore + "%");
     }
 
     /**
@@ -43,17 +43,16 @@ public class ExportController {
         toastPane.setVisible(false);
     }
 
+    /**
+     * Opens the user documentation PDF file.
+     */
     @FXML
     private void openDocumentation() {
         File pdfFile = new File("src/main/resources/itf221/gvi/boom/documentation/Benutzerdoku.pdf");
-        if (pdfFile.exists()) {
-            try {
-                Desktop.getDesktop().open(pdfFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("File not found!");
+        try {
+            Desktop.getDesktop().open(pdfFile);
+        } catch (IOException e) {
+            System.out.println("Can't find documentation");
         }
     }
 }

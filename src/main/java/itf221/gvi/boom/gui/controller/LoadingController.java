@@ -3,6 +3,7 @@ package itf221.gvi.boom.gui.controller;
 import itf221.gvi.boom.RoomManagementUnit;
 import itf221.gvi.boom.data.BoomData;
 import itf221.gvi.boom.io.IOManager;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,11 +12,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Controller class for managing the loading view of the application.
@@ -23,10 +26,9 @@ import java.nio.file.Path;
 public class LoadingController {
 
     @FXML
-    Button export_view_button;
+    AnchorPane rootPane;
 
-    @FXML
-    ProgressIndicator progressIndicator;
+    static int completionScore;
 
     private Path swPath;
     private Path ulPath;
@@ -35,9 +37,9 @@ public class LoadingController {
 
     /**
      * Sets the paths required for the distribution algorithm and starts the task.
-     * @param swPath The path to the SW file.
-     * @param ulPath The path to the UL file.
-     * @param rpPath The path to the RP file.
+     * @param swPath       The path to the SW file.
+     * @param ulPath       The path to the UL file.
+     * @param rpPath       The path to the RP file.
      * @param downloadPath The path to the download folder.
      */
     public void setPaths(Path swPath, Path ulPath, Path rpPath, Path downloadPath) {
@@ -48,26 +50,79 @@ public class LoadingController {
     }
 
     /**
-     * Initializes the 'loading' process by switching to the export view.
-     * @param event  The ActionEvent triggered by the user action.
-     * @throws IOException If there is an error while loading the view.
+     * On initializing runs algorithm.
+     * Changes view to Export view, if algorithm succeeds.
+     * Changes view back to Main view, if algorithm fails and shows error toast.
      */
     @FXML
-    private void initLoading(ActionEvent event) throws IOException {
-        // TODO: No real logic for now, just a button to see the next view
-        switchToExportView(event);
+    public void initialize() {
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                runDistributionAlg();
+                return null;
+            }
+        };
+
+        task.setOnFailed(e -> {
+            Throwable ex = task.getException();
+            System.err.println("Algorithm failed: " + ex.getMessage());
+            switchToMainView();
+            MainController.shouldFailedToastBeShown = true;
+        });
+
+        task.setOnSucceeded(e -> {
+            try {
+                switchToExportView();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+        new Thread(task).start();
     }
 
     /**
-     * Switches to the export view. It loads the export-view FXML file and sets it as the scene for the current stage.
-     * @param event The ActionEvent triggered by the user action.
+     * Executes the distribution algorithm and sets the completion score.
+     */
+    @FXML
+    private void runDistributionAlg() {
+        IOManager ioManager = new IOManager(
+                swPath,
+                ulPath,
+                rpPath,
+                downloadPath);
+        BoomData boomData = ioManager.readFiles();
+        RoomManagementUnit roomManagementUnit = new RoomManagementUnit();
+        completionScore = roomManagementUnit.execute(boomData);
+    }
+
+    /**
+     * Switches to the main view.
+     * Loads the main-view FXML file and sets it as the scene for the current stage.
+     */
+    private void switchToMainView() {
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/itf221/gvi/boom/fxml/main-view.fxml"));
+                Parent root = fxmlLoader.load();
+                Stage stage = (Stage) rootPane.getScene().getWindow();
+                stage.setScene(new Scene(root, stage.getWidth(), stage.getHeight()));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * Switches to the export view.
+     * Loads the export-view FXML file and sets it as the scene for the current stage.
      * @throws IOException If there is an error while loading the FXML file.
      */
-    private void switchToExportView(ActionEvent event) throws IOException {
-        // TODO: No real logic for now, just a button to see the next view
+    private void switchToExportView() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/itf221/gvi/boom/fxml/export-view.fxml"));
         Parent root = fxmlLoader.load();
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) rootPane.getScene().getWindow();
 
         double stageWidth = stage.getWidth();
         double stageHeight = stage.getHeight();
