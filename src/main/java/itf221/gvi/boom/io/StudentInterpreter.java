@@ -62,8 +62,8 @@ public class StudentInterpreter {
 
             try {
                 String schoolClass = row.get(0);
-                String name = row.get(1);
-                String surname = row.get(2);
+                String surname = row.get(1);
+                String name = row.get(2);
 
                 students.add(new Student(wishes, surname, name, schoolClass, studentId));
             } catch (IndexOutOfBoundsException e) {
