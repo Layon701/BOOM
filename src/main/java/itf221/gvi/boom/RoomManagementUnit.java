@@ -29,7 +29,7 @@ public class RoomManagementUnit {
         distributeUnfulfilledStudents(boomData);
 
         setTimeslotAndRoom(boomData);
-        System.out.println(getAllPlannedPresentations(boomData));
+        System.out.println(boomData);
         return calculateCompletionScore(boomData);
     }
 
@@ -278,7 +278,8 @@ public class RoomManagementUnit {
      *     <li>All planned presentations of a given offered presentation (identified by its unique ID) are scheduled in the same room.</li>
      *     <li>The room is selected and timeslots are chosen so that gaps in the room’s schedule are minimized.</li>
      *     <li>If the offered presentation’s company (indicated by companyName) is "Polizei", the room with roomNumber "Aula" is used.</li>
-     *     <li>For all other offered presentations, only rooms other than "Aula" are used.</li>
+     *     <li>For all other offered presentations, only rooms other than "Aula" and ones with too little capacity are considered .</li>
+     *     <li>whereby the smallest rooms have processing priority in order to maximize room capacities</li>
      * </ul>
      *
      * @param boomData the data holding the companies (and their offered presentations), planned presentations, and available rooms.
@@ -336,6 +337,9 @@ public class RoomManagementUnit {
                     }
                 }
 
+                // Process priority for the smallest rooms
+                candidateRooms.sort(Comparator.comparingInt(Room::getCapacity));
+
                 // Try to schedule all planned presentations in one room.
                 Room bestRoom = null;
                 List<Integer> bestTimeslots = null;
@@ -373,7 +377,7 @@ public class RoomManagementUnit {
                     // The gap is defined as (lastSlot - firstSlot) - (numberOfPresentations - 1),
                     // meaning how many unused slots exist between the first and last assignments.
                     if (candidateFits) {
-                        int gap = assignedSlots.get(assignedSlots.size() - 1) - assignedSlots.get(0) - (assignedSlots.size() - 1);
+                        int gap = assignedSlots.getLast() - assignedSlots.getFirst() - (assignedSlots.size() - 1);
                         if (gap < minimalGap) {
                             minimalGap = gap;
                             bestRoom = candidate;
