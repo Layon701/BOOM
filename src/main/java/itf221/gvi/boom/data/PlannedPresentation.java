@@ -51,7 +51,7 @@ public class PlannedPresentation {
                 "timeslot=" + timeslot +
                 ", room=" + room +
                 ", offeredPresentation=" + offeredPresentation.getId() +
-                ", attendees=" + attendees +
+                ", attendees=" + attendees.size() +
                 '}';
     }
 }
