@@ -27,4 +27,16 @@ public class Student {
         this.schoolClass = schoolClass;
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "plannedPresentations=" + plannedPresentations.stream().map(PlannedPresentation::getOfferedPresentation).map(OfferedPresentation::getId).toList() +
+                ", wishedPresentations=" + wishedPresentations.stream().map(OfferedPresentation::getId).toList() +
+                ", surname='" + surname + '\'' +
+                ", name='" + name + '\'' +
+                ", schoolClass='" + schoolClass + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }
