@@ -81,7 +81,7 @@ public class MainController {
      * Returns the output path to the user's default "Downloads" folder.
      * @return The Path to the "Downloads" folder of the current user.
      */
-    public Path getDownloadFolderPath() {
+    public static Path getDownloadFolderPath() {
         String userHome = System.getProperty("user.home");
         return Paths.get(userHome, "Downloads");
     }

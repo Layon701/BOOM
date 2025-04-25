@@ -1,12 +1,14 @@
 package itf221.gvi.boom.gui.controller;
 
+import itf221.gvi.boom.io.writer.XlsxWriter;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * Controller class for managing the export view of the application.
@@ -19,6 +21,9 @@ public class ExportController {
     @FXML
     private Label completionScoreToast;
 
+    XlsxWriter xlsxWriter = new XlsxWriter();
+    Path downloadPath = MainController.getDownloadFolderPath();
+
     /**
      * Called automatically after the FXML is loaded.
      */
@@ -26,6 +31,21 @@ public class ExportController {
     public void initialize() {
         showSuccessToast();
         completionScoreToast.setText("✔ Erfolg! Erfüllungsscore: " + LoadingController.completionScore + "%");
+    }
+
+    @FXML
+    private void downloadLZ() throws IOException {
+        xlsxWriter.writeStudentPlan(downloadPath, LoadingController.boomData.getStudents());
+    }
+
+    @FXML
+    private void downloadAL() throws IOException {
+        xlsxWriter.writePresentationAttendance(downloadPath, LoadingController.boomData.getAllPlannedPresentations());
+    }
+
+    @FXML
+    private void downloadRZL() throws IOException {
+        xlsxWriter.writeRoomTimetable(downloadPath, LoadingController.boomData.getAllOfferedPresentations());
     }
 
     /**

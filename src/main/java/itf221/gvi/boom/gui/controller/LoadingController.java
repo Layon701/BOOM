@@ -25,6 +25,8 @@ public class LoadingController {
 
     static int completionScore;
 
+    static BoomData boomData;
+
     private Path swPath;
     private Path ulPath;
     private Path rpPath;
@@ -86,7 +88,7 @@ public class LoadingController {
                 ulPath,
                 rpPath,
                 downloadPath);
-        BoomData boomData = ioManager.readFiles();
+        boomData = ioManager.readFiles();
         RoomManagementUnit roomManagementUnit = new RoomManagementUnit();
         completionScore = roomManagementUnit.execute(boomData);
     }

@@ -25,9 +25,9 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <Button id="sw_browse_button" layoutX="428.0" layoutY="157.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="94.0" text="Download" />
-        <Button id="ul_browse_button" layoutX="428.0" layoutY="259.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="94.0" text="Download" />
-        <Button id="rp_browse_button" layoutX="428.0" layoutY="366.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="94.0" text="Download" />
+        <Button layoutX="428.0" layoutY="157.0" mnemonicParsing="false" onAction="#downloadLZ" prefHeight="35.0" prefWidth="94.0" text="Download" />
+        <Button layoutX="428.0" layoutY="259.0" mnemonicParsing="false" onAction="#downloadAL" prefHeight="35.0" prefWidth="94.0" text="Download" />
+        <Button layoutX="428.0" layoutY="366.0" mnemonicParsing="false" onAction="#downloadRZL" prefHeight="35.0" prefWidth="94.0" text="Download" />
       <Label alignment="CENTER" layoutX="180.0" layoutY="156.0" prefHeight="37.0" prefWidth="219.0" text="Laufzettel" textAlignment="CENTER">
          <font>
             <Font size="16.0" />
