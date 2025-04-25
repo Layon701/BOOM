@@ -56,6 +56,7 @@ public class OfferedPresentation {
                 ", plannedPresentations=" + plannedPresentations +
                 ", amountOfPresentations=" + amountOfPresentations +
                 '}';
+        // return String.valueOf(id);
     }
 }
 

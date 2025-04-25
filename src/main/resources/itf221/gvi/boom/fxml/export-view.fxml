@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="itf221.gvi.boom.gui.controller.ExportController">
+    <children>
+        <Label alignment="CENTER" layoutX="241.0" layoutY="59.0" prefHeight="35.0" prefWidth="238.0" text="Dateien downloaden" textAlignment="CENTER">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <MenuBar prefHeight="25.0" prefWidth="710.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="Hilfe">
+                    <items>
+                        <MenuItem fx:id="help_menuItem" mnemonicParsing="false" onAction="#openDocumentation" text="Anwenderdokumentation öffnen" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <Button layoutX="428.0" layoutY="157.0" mnemonicParsing="false" onAction="#downloadLZ" prefHeight="35.0" prefWidth="94.0" text="Download" />
+        <Button layoutX="428.0" layoutY="259.0" mnemonicParsing="false" onAction="#downloadAL" prefHeight="35.0" prefWidth="94.0" text="Download" />
+        <Button layoutX="428.0" layoutY="366.0" mnemonicParsing="false" onAction="#downloadRZL" prefHeight="35.0" prefWidth="94.0" text="Download" />
+      <Label alignment="CENTER" layoutX="180.0" layoutY="156.0" prefHeight="37.0" prefWidth="219.0" text="Laufzettel" textAlignment="CENTER">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="180.0" layoutY="258.0" prefHeight="37.0" prefWidth="219.0" text="Anwesenheitsliste" textAlignment="CENTER">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="180.0" layoutY="365.0" prefHeight="37.0" prefWidth="219.0" text="Raum-/Zeitpläne-Liste" textAlignment="CENTER">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+        <AnchorPane fx:id="toastPane" layoutX="471.0" layoutY="14.0" prefHeight="40.0" prefWidth="263.0" style="-fx-background-color: #4CAF50; -fx-background-radius: 10;" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+            <children>
+                <Button layoutX="209.0" layoutY="4.0" minWidth="41.0" onAction="#closeToast" prefHeight="32.0" prefWidth="41.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px;" text="x">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+                <Label fx:id="completionScoreToast" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="204.0" text="✔ Erfolg! Erfüllungsscore: " textFill="white">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>

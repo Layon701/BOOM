@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="itf221.gvi.boom.gui.controller.MainController">
+   <children>
+      <Label alignment="CENTER" layoutX="246.0" layoutY="52.0" prefHeight="35.0" prefWidth="219.0" text="Dateien auswählen" textAlignment="CENTER" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="50.0">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="250.0" layoutY="126.0" text="Schülerwünsche" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="126.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="250.0" layoutY="235.0" text="Unternehmensliste" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="235.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="250.0" layoutY="345.0" text="Raumplan" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="345.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="sw_import_field" editable="false" focusTraversable="false" layoutX="250.0" layoutY="157.0" prefHeight="35.0" prefWidth="219.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="150.0" />
+      <TextArea fx:id="ul_import_field" editable="false" focusTraversable="false" layoutX="180.0" layoutY="257.0" prefHeight="35.0" prefWidth="219.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="260.0" />
+      <TextArea fx:id="rp_import_field" editable="false" focusTraversable="false" layoutX="180.0" layoutY="364.0" prefHeight="35.0" prefWidth="219.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="370.0" />
+      <Button fx:id="sw_browse_button" focusTraversable="false" layoutX="510.0" layoutY="151.0" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="35.0" prefWidth="94.0" text="Durchsuchen" AnchorPane.leftAnchor="510.0" AnchorPane.topAnchor="150.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button id="ul_browse_button" fx:id="ul_browse_button" focusTraversable="false" layoutX="510.0" layoutY="262.0" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="35.0" prefWidth="94.0" text="Durchsuchen" AnchorPane.leftAnchor="510.0" AnchorPane.topAnchor="260.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button id="rp_browse_button" fx:id="rp_browse_button" focusTraversable="false" layoutX="510.0" layoutY="372.0" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="35.0" prefWidth="94.0" text="Durchsuchen" AnchorPane.leftAnchor="510.0" AnchorPane.topAnchor="370.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button id="import_button" fx:id="import_button" disable="true" focusTraversable="false" layoutX="624.0" layoutY="453.0" mnemonicParsing="false" onAction="#initStart" prefHeight="35.0" prefWidth="63.0" text="Starten" AnchorPane.topAnchor="475.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <MenuBar prefHeight="25.0" prefWidth="710.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Hilfe">
+            <items>
+              <MenuItem fx:id="help_menuItem" mnemonicParsing="false" onAction="#openDocumentation" text="Anwenderdokumentation öffnen" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <AnchorPane fx:id="toastPane" layoutX="471.0" layoutY="14.0" prefHeight="40.0" prefWidth="263.0" style="-fx-background-color: #ff0000; -fx-background-radius: 10;" visible="false" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+         <children>
+            <Button layoutX="209.0" layoutY="4.0" minWidth="41.0" onAction="#closeToast" prefHeight="32.0" prefWidth="41.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px;" text="x">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Label fx:id="algorithmFailedToast" layoutX="10.0" layoutY="10.0" prefHeight="20.0" prefWidth="204.0" textFill="white">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

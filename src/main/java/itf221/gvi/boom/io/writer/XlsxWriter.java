@@ -12,6 +12,7 @@ import itf221.gvi.boom.io.writer.FileWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -38,6 +39,10 @@ public class XlsxWriter implements FileWriter{
             addStudent(student, sheet);
         }
 
+        if (Files.isDirectory(path)) {
+            path = path.resolve("Laufzettel.xlsx");
+        }
+
         File file = path.toFile();
         file.getParentFile().mkdirs();
         file.createNewFile();
@@ -58,6 +63,9 @@ public class XlsxWriter implements FileWriter{
         for(PlannedPresentation presentation : presentations)
         {
             addPresentation(presentation, sheet);
+        }
+        if (Files.isDirectory(path)) {
+            path = path.resolve("Anwesenheitsliste.xlsx");
         }
 
         File file = path.toFile();
@@ -85,6 +93,10 @@ public class XlsxWriter implements FileWriter{
         for(OfferedPresentation presentation : presentations)
         {
             addRooms(presentation, sheet);
+        }
+
+        if (Files.isDirectory(path)) {
+            path = path.resolve("Raum-und-Zeitplan.xlsx");
         }
 
         File file = path.toFile();
