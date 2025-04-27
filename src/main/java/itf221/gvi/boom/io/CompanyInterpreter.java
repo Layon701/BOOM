@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import itf221.gvi.boom.data.Company;
 import itf221.gvi.boom.data.OfferedPresentation;
-import itf221.gvi.boom.data.Room;
 import itf221.gvi.boom.exceptions.InterpretException;
 
 /**
