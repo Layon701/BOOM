@@ -24,20 +24,20 @@ public class ReaderTest {
 
         List<String> temp2 = new ArrayList<>();
         temp2.add("test");
-        temp2.add("123.0");
-        temp2.add("456.0");
+        temp2.add("123");
+        temp2.add("456");
         expectedData.add(temp2);
 
         List<String> temp3 = new ArrayList<>();
         temp3.add("test2");
         temp3.add("234");
-        temp3.add("567.0");
+        temp3.add("567");
         expectedData.add(temp3);
 
         List<String> temp4 = new ArrayList<>();
         temp4.add("empty next cell");
         temp4.add("");
-        temp4.add("678.0");
+        temp4.add("678");
         expectedData.add(temp4);
 
         assertEquals(expectedData, testData);
