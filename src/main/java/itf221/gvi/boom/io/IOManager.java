@@ -47,9 +47,9 @@ public class IOManager {
     private Path outputFolderPath;
 
     /**
-     * Method to fill and return a BoomData object
+     * Method to fill and return a BoomData object.
      *
-     * @return BoomDate object with rooms, companies and students
+     * @return BoomData object with rooms, companies and students.
      */
     public BoomData readFiles() {
         Reader reader = new XlsxReader();
@@ -72,8 +72,5 @@ public class IOManager {
 
         System.out.println("Successfully created BoomData object from input files");
         return new BoomData(rooms, companies, students);
-    }
-
-    public void writeFiles() {
     }
 }
