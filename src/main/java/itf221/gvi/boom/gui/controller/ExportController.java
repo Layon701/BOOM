@@ -33,16 +33,28 @@ public class ExportController {
         completionScoreToast.setText("✔ Erfolg! Erfüllungsscore: " + LoadingController.completionScore + "%");
     }
 
+    /**
+     * Method to download student plan ("Laufzettel").
+     * @throws IOException if an I/O error occurs.
+     */
     @FXML
     private void downloadLZ() throws IOException {
         xlsxWriter.writeStudentPlan(downloadPath, LoadingController.boomData.getStudents());
     }
 
+    /**
+     * Method to download attendance list ("Anwesenheitsliste").
+     * @throws IOException if an I/O error occurs.
+     */
     @FXML
     private void downloadAL() throws IOException {
         xlsxWriter.writePresentationAttendance(downloadPath, LoadingController.boomData.getAllPlannedPresentations());
     }
 
+    /**
+     * Method to download room timetable plan ("Raum-/Zeitpläne-Liste").
+     * @throws IOException if an I/O error occurs.
+     */
     @FXML
     private void downloadRZL() throws IOException {
         xlsxWriter.writeRoomTimetable(downloadPath, LoadingController.boomData.getAllOfferedPresentations());
