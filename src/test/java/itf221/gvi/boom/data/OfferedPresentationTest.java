@@ -11,6 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class OfferedPresentationTest {
 
+    /**
+     * Tests to get planned presentation with the least amount of attendees.
+     */
     @Test
     public void getPlannedPresentationWithLeastAmountOfAttendeesTest() {
         OfferedPresentation o1 = new OfferedPresentation(1, 5, 20,
@@ -35,7 +38,6 @@ public class OfferedPresentationTest {
 
         plannedPresentations.get(2).addStudent(new Student(new ArrayList<>(), "", "", "", 0));
         assertEquals(plannedPresentations.get(0), o2.getPlannedPresentationWithLeastAmountOfAttendees());
-
     }
 
     /**
