@@ -6,7 +6,6 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Holds all relevant BOOM data.
@@ -26,7 +25,6 @@ public class BoomData {
                 ", students=" + students +
                 '}';
     }
-
 
     /**
      * Collects all planned presentations from the companies.
