@@ -6,7 +6,6 @@ import org.apache.poi.xssf.extractor.XSSFExcelExtractor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
 
-import java.awt.geom.PathIterator;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
@@ -17,6 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class XlsxWriterTest {
 
+    /**
+     * Creates dummy data for testing purposes, including rooms, companies, students, and presentations.
+     *
+     * @return BoomData object containing the dummy data.
+     */
     protected BoomData createDummyData(){
         Room tmpRoom1 = new Room("1", 20);
         Room tmpRoom2 = new Room("20", 20);
@@ -70,13 +74,11 @@ public class XlsxWriterTest {
                 p.getAttendees().add(s);
             }
         }
-
-
         return new BoomData(roomData, companyData, studentData);
     }
 
     /**
-     * Tests the interpret method from the CompanyInterpreter class.
+     * Tests the interpret() method from the CompanyInterpreter class.
      */
     @Test
     void writeStudentPlanTest() {
@@ -161,9 +163,13 @@ public class XlsxWriterTest {
         }
     }
 
+    /**
+     * Tests the writePresentationAttendance() method, ensuring that it correctly writes the
+     * presentation attendance sheet to an Excel file.
+     */
     @Test
     void writePresentationAttendanceTest(){
-        BoomData data = createDummyData();
+        BoomData data = this.createDummyData();
         List<PlannedPresentation> plannedPresentations = new ArrayList<>();
         List<OfferedPresentation> offeredPresentations = new ArrayList<>();
         for(Company company : data.getCompanies())
@@ -189,42 +195,41 @@ public class XlsxWriterTest {
 
 
             Row row = expectedSheet.createRow(0);
-            row.createCell(1).setCellValue("Company1");
-            row.createCell(2).setCellValue("ID: 1");
-            row.createCell(3).setCellValue("Company1: specialty1");
-            row.createCell(4).setCellValue("specialty1");
+            row.createCell(0).setCellValue("Company1");
+            row.createCell(1).setCellValue("Company1: specialty1");
+            row.createCell(2).setCellValue("1");
+            row.createCell(3).setCellValue("A");
             row = expectedSheet.createRow(2);
-            row.createCell(1).setCellValue("1");
-            row.createCell(2).setCellValue("name1");
-            row.createCell(3).setCellValue("surname1");
+            row.createCell(0).setCellValue("1");
+            row.createCell(1).setCellValue("name1");
+            row.createCell(2).setCellValue("surname1");
             row = expectedSheet.createRow(3);
-            row.createCell(1).setCellValue("2");
-            row.createCell(2).setCellValue("name2");
-            row.createCell(3).setCellValue("surname2");
+            row.createCell(0).setCellValue("2");
+            row.createCell(1).setCellValue("name2");
+            row.createCell(2).setCellValue("surname2");
             row = expectedSheet.createRow(4);
-            row.createCell(1).setCellValue("3");
-            row.createCell(2).setCellValue("name3");
-            row.createCell(3).setCellValue("surname3");
+            row.createCell(0).setCellValue("3");
+            row.createCell(1).setCellValue("name3");
+            row.createCell(2).setCellValue("surname3");
 
 
             row = expectedSheet.createRow(5);
-            row.createCell(1).setCellValue("Company2");
-            row.createCell(2).setCellValue("ID: 2");
-            row.createCell(3).setCellValue("Company2: specialty2");
-            row.createCell(4).setCellValue("specialty2");
+            row.createCell(0).setCellValue("Company2");
+            row.createCell(1).setCellValue("Company2: specialty2");
+            row.createCell(1).setCellValue("20");
+            row.createCell(1).setCellValue("A");
             row = expectedSheet.createRow(7);
-            row.createCell(1).setCellValue("2");
-            row.createCell(2).setCellValue("name2");
-            row.createCell(3).setCellValue("surname2");
+            row.createCell(0).setCellValue("2");
+            row.createCell(1).setCellValue("name2");
+            row.createCell(2).setCellValue("surname2");
             row = expectedSheet.createRow(8);
-            row.createCell(1).setCellValue("3");
-            row.createCell(2).setCellValue("name3");
-            row.createCell(3).setCellValue("surname3");
+            row.createCell(0).setCellValue("3");
+            row.createCell(1).setCellValue("name3");
+            row.createCell(2).setCellValue("surname3");
             row = expectedSheet.createRow(9);
-            row.createCell(1).setCellValue("4");
-            row.createCell(2).setCellValue("name4");
-            row.createCell(3).setCellValue("surname4");
-
+            row.createCell(0).setCellValue("4");
+            row.createCell(1).setCellValue("name4");
+            row.createCell(2).setCellValue("surname4");
 
             FileInputStream file = new FileInputStream(outputFile.toFile());
             XSSFWorkbook workbook = new XSSFWorkbook(file);
@@ -235,9 +240,12 @@ public class XlsxWriterTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
+    /**
+     * Tests the writeRoomTimetable() method, ensuring that it correctly writes the room timetable
+     * to an Excel file.
+     */
     @Test
     void writeRoomTimetableTest(){
         BoomData data = createDummyData();
