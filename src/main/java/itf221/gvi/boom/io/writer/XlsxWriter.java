@@ -2,12 +2,10 @@ package itf221.gvi.boom.io.writer;
 
 import itf221.gvi.boom.data.OfferedPresentation;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import itf221.gvi.boom.data.PlannedPresentation;
 import itf221.gvi.boom.data.Student;
-import itf221.gvi.boom.io.writer.FileWriter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,8 +16,18 @@ import java.util.List;
 
 import static java.lang.String.valueOf;
 
-public class XlsxWriter implements FileWriter{
+/**
+ * Class to generate excel documents.
+ */
+public class XlsxWriter implements FileWriter {
 
+    /**
+     * Writes a student plan to the specified file path.
+     *
+     * @param path the file path to write to.
+     * @param students the list of students.
+     * @throws IOException if an I/O error occurs.
+     */
     public void writeStudentPlan(Path path, List<Student> students) throws IOException{
 
         Workbook workbook = new XSSFWorkbook();
@@ -53,6 +61,13 @@ public class XlsxWriter implements FileWriter{
         }
     }
 
+    /**
+     * Writes a presentation attendance list to the specified file path.
+     *
+     * @param path the file path to write to.
+     * @param presentations the list of planned presentations.
+     * @throws IOException if an I/O error occurs.
+     */
     public void writePresentationAttendance(Path path, List<PlannedPresentation> presentations) throws IOException{
 
         Workbook workbook = new XSSFWorkbook();
@@ -78,6 +93,13 @@ public class XlsxWriter implements FileWriter{
         }
     }
 
+    /**
+     * Writes a room timetable plan to the specified file path.
+     *
+     * @param path the file path to write to.
+     * @param presentations the list of offered presentations.
+     * @throws IOException if an I/O error occurs.
+     */
     public void writeRoomTimetable(Path path, List<OfferedPresentation> presentations) throws IOException{
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet();
@@ -109,6 +131,14 @@ public class XlsxWriter implements FileWriter{
         }
     }
 
+    /**
+     * Helper method to add student data to the sheet.
+     * Writes the student's class, ID, name, surname, and planned presentations.
+     *
+     * @param student the student whose data is to be written.
+     * @param sheet the sheet to which the student data should be added.
+     * @throws IOException if an I/O error occurs while writing the student data.
+     */
     protected void addStudent(Student student, Sheet sheet) throws IOException
     {
         int studentRowNum = sheet.getLastRowNum() + 2;
@@ -133,6 +163,14 @@ public class XlsxWriter implements FileWriter{
         }
     }
 
+    /**
+     * Helper method to add presentation data to the sheet.
+     * Writes the presentation's company, title, room, timeslot, and attendees.
+     *
+     * @param presentation the planned presentation whose data is to be written.
+     * @param sheet the sheet to which the presentation data should be added.
+     * @throws IOException  if an I/O error occurs while writing the presentation data.
+     */
     protected void addPresentation(PlannedPresentation presentation, Sheet sheet) throws IOException
     {
         OfferedPresentation presentationOffer = presentation.getOfferedPresentation();
@@ -140,23 +178,32 @@ public class XlsxWriter implements FileWriter{
         int presentationRowNum = sheet.getLastRowNum() + 1;;
         Row presentationDataRow = sheet.createRow(presentationRowNum);
         presentationDataRow.createCell(0).setCellValue(presentationOffer.getCompanyName());
-        presentationDataRow.createCell(1).setCellValue("ID: " + presentationOffer.getId());
-        presentationDataRow.createCell(2).setCellValue(presentationOffer.getTitle());
-        presentationDataRow.createCell(3).setCellValue(presentationOffer.getSpecialty());
+        presentationDataRow.createCell(1).setCellValue(presentationOffer.getTitle());
+        presentationDataRow.createCell(2).setCellValue(presentation.getRoom().getRoomNumber());
+        presentationDataRow.createCell(3).setCellValue(valueOf(presentation.getTimeslot()));
 
         presentationRowNum++;
+        int AttendeeNum = 1;
         for(Student attendee : presentation.getAttendees()) {
             presentationRowNum++;
             Row attendeeRow = sheet.createRow(presentationRowNum);
-            attendeeRow.createCell(0).setCellValue(attendee.getId());
+            attendeeRow.createCell(0).setCellValue(AttendeeNum);
             attendeeRow.createCell(1).setCellValue(attendee.getName());
             attendeeRow.createCell(2).setCellValue(attendee.getSurname());
+            AttendeeNum++;
         }
     }
 
+    /**
+     * Helper method to add room allocation data to the sheet.
+     * Writes the room number for each timeslot of a given presentation.
+     *
+     * @param presentation the offered presentation whose room allocation data is to be written.
+     * @param sheet the sheet to which the room allocation data should be added.
+     * @throws IOException if an I/O error occurs while writing the room data.
+     */
     protected void addRooms(OfferedPresentation presentation, Sheet sheet) throws IOException
     {
-
         int roomsRowNum = sheet.getLastRowNum() + 1;;
         Row roomDataRow = sheet.createRow(roomsRowNum);
         roomDataRow.createCell(0).setCellValue(presentation.getCompanyName());
