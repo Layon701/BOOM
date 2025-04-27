@@ -101,8 +101,8 @@ public class RoomManagementUnitTest {
         BoomData boomData = new BoomData(null, null, studentList);
         RoomManagementUnit roomManagementUnit = new RoomManagementUnit();
 
-        // Expected percentage: average score = (16 + 17)/2 = 16.5, then 16.5 * 5 = 82.5%
-        double expectedValue = 82.5;
+        // Expected percentage: average score = (16 + 17)/2 = 16.5, then 16.5 * 5 = 82.5% -> but since we don't use double anymore, it's going to be 82%
+        double expectedValue = 82.0;
         double actualValue = roomManagementUnit.calculateCompletionScore(boomData);
 
         // Compare double values using a small delta for precision
