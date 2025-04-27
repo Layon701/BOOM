@@ -5,6 +5,14 @@ import lombok.NoArgsConstructor;
 
 import java.util.*;
 
+/**
+ *  Handles the distribution and scheduling of students and presentations within available rooms and timeslots.
+ *
+ *  This class uses a deterministic, pseudo-randomized algorithm to:
+ *  Assign students to their wished presentations based on preferences and availability.
+ *  Ensure minimum capacities for presentations are met by reallocating unassigned students.
+ *  Schedule presentations into rooms and timeslots while minimizing schedule gaps and maximizing room utilization.
+ */
 @NoArgsConstructor
 public class RoomManagementUnit {
 
@@ -16,7 +24,7 @@ public class RoomManagementUnit {
     private final ArrayList<Student> unfulfilledStudents = new ArrayList<>();
 
     /**
-     * <b>Deterministic</b> algorithm for distributing the offered presentations among the students considering their wishes.
+     * Deterministic algorithm for distributing the offered presentations among the students considering their wishes.
      *
      * @param boomData the data holding the presentations, the student wishes and the available rooms.
      */
@@ -48,7 +56,6 @@ public class RoomManagementUnit {
 
     /**
      * Adds student to the planned presentation. If the wish can not be granted the 6th wish will be used as a supplement.
-     * <p>
      * In case that the 6th wish is already planned for that student or the 6th presentation is already full,
      * the student will be added to a list of unfulfilled students.
      *
@@ -149,7 +156,6 @@ public class RoomManagementUnit {
 
     /**
      * Pseudo-randomizes given list.
-     * <p>
      * Random uses a mathematical formula to generate numbers that appear random but are entirely determined by the seed.
      *
      * @param students the student list.
@@ -244,7 +250,7 @@ public class RoomManagementUnit {
      *
      * @param student the student where we want to check if the wish was granted.
      * @param i       index of the wish.
-     * @return boolean
+     * @return boolean true if wish is granted, false if wish is not granted.
      */
     private boolean isWishGranted(Student student, int i) {
         boolean isWished = false;
@@ -259,14 +265,12 @@ public class RoomManagementUnit {
 
     /**
      * Assigns a room and a timeslot for every planned presentation based on the following criteria:
-     * <ul>
-     *     <li>Every planned presentation is given a timeslot (from 'A' to 'E') that is not earlier than its offered presentation’s earliest allowed time.</li>
-     *     <li>All planned presentations of a given offered presentation (identified by its unique ID) are scheduled in the same room.</li>
-     *     <li>The room is selected and timeslots are chosen so that gaps in the room’s schedule are minimized.</li>
-     *     <li>If the offered presentation’s company (indicated by companyName) is "Polizei", the room with roomNumber "Aula" is used.</li>
-     *     <li>For all other offered presentations, only rooms other than "Aula" and ones with too little capacity are considered .</li>
-     *     <li>whereby the smallest rooms have processing priority in order to maximize room capacities</li>
-     * </ul>
+     *     Every planned presentation is given a timeslot (from 'A' to 'E') that is not earlier than its offered presentation’s earliest allowed time.
+     *     All planned presentations of a given offered presentation (identified by its unique ID) are scheduled in the same room.
+     *     The room is selected and timeslots are chosen so that gaps in the room’s schedule are minimized.
+     *     If the offered presentation’s company (indicated by companyName) is "Polizei", the room with roomNumber "Aula" is used.
+     *     For all other offered presentations, only rooms other than "Aula" and ones with too little capacity are considered.
+     *     whereby the smallest rooms have processing priority in order to maximize room capacities.
      *
      * @param boomData the data holding the companies (and their offered presentations), planned presentations, and available rooms.
      * @throws IllegalStateException if no candidate room is found for an offered presentation.
@@ -387,5 +391,4 @@ public class RoomManagementUnit {
             }
         }
     }
-
 }
