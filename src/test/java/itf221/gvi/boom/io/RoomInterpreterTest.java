@@ -1,6 +1,5 @@
 package itf221.gvi.boom.io;
 
-import itf221.gvi.boom.data.Company;
 import itf221.gvi.boom.data.Room;
 import org.junit.jupiter.api.Test;
 
