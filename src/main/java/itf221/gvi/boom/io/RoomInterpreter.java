@@ -4,18 +4,17 @@ import java.util.List;
 import java.util.ArrayList;
 
 import itf221.gvi.boom.data.Room;
-import itf221.gvi.boom.data.Student;
 import itf221.gvi.boom.exceptions.InterpretException;
 
 /**
- * Interpreter for the room Excel-sheet
+ * Interpreter for the room excel-sheet.
  */
 public class RoomInterpreter {
     /**
-     * Creates a list of Room objects
+     * Creates a list of Room objects.
      *
-     * @param data List<List<String>> (from the Xlsx-Reader)
-     * @return List<Room>
+     * @param data List<List<String>> (from the Xlsx-Reader).
+     * @return List<Room> list with rooms.
      */
     public static List<Room> interpret(List<List<String>> data) {
         ArrayList<Room> rooms = new ArrayList<Room>();
