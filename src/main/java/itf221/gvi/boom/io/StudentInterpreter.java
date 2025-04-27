@@ -11,25 +11,22 @@ import itf221.gvi.boom.data.Student;
 import itf221.gvi.boom.exceptions.InterpretException;
 
 /**
- * Interpreter for the student Excel-sheet
+ * Interpreter for the student excel-sheet.
  */
 public class StudentInterpreter {
     /**
-     * Creates a list of Student objects
+     * Creates a list of Student objects.
      *
      * @param data List<List<String>> (from the Xlsx-Reader)
-     * @return List<Student>
+     * @return List<Student> list with students.
      */
     public static List<Student> interpret(List<List<String>> data, List<Company> companies) {
-        //make Map of presentations
         Map<Integer, OfferedPresentation> presentationMap = new HashMap<Integer, OfferedPresentation>();
         for (Company company : companies) {
             for (OfferedPresentation presentation : company.getOfferedPresentations()) {
                 presentationMap.put(presentation.getId(), presentation);
             }
         }
-
-        //
         ArrayList<Student> students = new ArrayList<Student>();
         int studentId = 0;
         for (List<String> row : data) {
@@ -37,7 +34,6 @@ public class StudentInterpreter {
             if (row.size() != 9) {
                 continue;
             }
-
             boolean hasEmpty = false;
             for (String cell : row) {
                 if (cell.trim().isEmpty()) {
@@ -48,7 +44,6 @@ public class StudentInterpreter {
             if (hasEmpty) {
                 continue;
             }
-
             List<OfferedPresentation> wishes = new ArrayList<OfferedPresentation>();
             for (int columnIndex = 3; columnIndex < 9; columnIndex++) {
                 try {
@@ -59,7 +54,6 @@ public class StudentInterpreter {
                     throw new InterpretException("Error while trying to get wishes for Student object", e);
                 }
             }
-
             try {
                 String schoolClass = row.get(0);
                 String surname = row.get(1);
